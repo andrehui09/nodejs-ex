@@ -1,0 +1,55 @@
+convert everything to ajax:
+name set as usual
+to initiate search:
+- ajax post to server looking for a game, server responds with unique id
+- client repeatedly gets using id until response is desirable, ie. game found
+- ajax post to server ready and waits on opponent to ready by repeated gets
+
+
+temp layout:
+
+<h1>Ultimate Knots and Crosses</h1>
+<div class='container'>
+<div class='row'>
+
+<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+    //game canvas
+</div>
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    //instructions
+</div>
+
+<div class="col-12">
+    //chat and online players
+</div>
+
+</div>
+</div>
+
+e.g. collapse content:
+<h1><a href='#collapse' data-toggle='collapse'></a></h1>
+<div id='collapse' class='collapse'>anything here</div>
+
+board canvas:
+
+
+CompSci\GitHub\CompSciY2\Web Programming\work-ajax
+
+
+
+Next:
+change users to people:
+GET to list all people at /people
+GET for individuals at /people/:username
+
+proper logon - POST to add people as long as username not taken
+access_token required for updates: concertina should work
+incorrect or missing token -> http 403 error
+responses provided as JSON
+content type correct
+http codes correct - 400 for POST errors apart from access token
+add Delia Derbyshire (doctorwhocomposer) on startup
+
+GET /people returns list of all users ie. list of objects
+GET /people/doctorwhocomposer returns just the user who's username is doctorwhocomposer
