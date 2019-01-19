@@ -13,7 +13,8 @@ var gameid;
 var started = false;
 var finalupdate = false;
 var invitesent = false;
-var url = window.location.host;
+var url = window.location.href;
+console.log(url);
 
 const tileRange = {
     "1": {"min": "8", "max": "58"},
@@ -62,7 +63,7 @@ window.onload = function(){
 };
 
 window.onbeforeunload = function(){
-    $.post(url + '/people/' + username, {"access_token":access_token, "status":"offline"}, function(){
+    $.post(url + 'people/' + username, {"access_token":access_token, "status":"offline"}, function(){
         
     });
 };
@@ -108,7 +109,7 @@ function closePlayer(){
 
 function updateChat() {
     //console.log('updatingchat');
-    $.get(url + '/chat', {}, function (data) {
+    $.get(url + 'chat', {}, function (data) {
         //recieve list size 30?
         if(data != chatHist){
             $('#worldchat').html(data);
@@ -121,7 +122,7 @@ function updateChat() {
 function sendMsg() {
     message = $('#msg').val();
     if (username) {
-        $.post(url + '/chat', { "access_token":access_token, "username":username, "message":message }, function (data) {
+        $.post(url + 'chat', { "access_token":access_token, "username":username, "message":message }, function (data) {
             if(data["posted"] == "true"){
                 document.getElementById('msgbox').reset();
             };
@@ -132,7 +133,7 @@ function sendMsg() {
 };
 
 function refreshPlayers() {
-    $.get(url + '/people', {"filter":"online"}, function(data){
+    $.get(url + 'people', {"filter":"online"}, function(data){
         $('#onlineplayers').html('');
         for(i = 0; i < data["online"].length; i++){
             if(data["online"][i] != username){
@@ -143,7 +144,7 @@ function refreshPlayers() {
 };
 
 function loadPlayer(usr){
-    $.get(url + '/people/' + usr, {"function":"stats"}, function(data){
+    $.get(url + 'people/' + usr, {"function":"stats"}, function(data){
         $('#pname').html(usr);
         $('#pwins').html('Wins: ' + data["wins"]);
         $('#pplayed').html('Played: ' + data["played"]);
@@ -153,7 +154,7 @@ function loadPlayer(usr){
 };
 
 function getOnlinePlayers(){
-    $.get(url + '/people', {"filter":"online"}, function(data){
+    $.get(url + 'people', {"filter":"online"}, function(data){
         $('#onlineplayers').html("");
         for(var p in data){
             $('#onlineplayers').append('<div><button class="btn btn-default btn-small" onclick="loadPlayer(\'' + data["username"] + '\')">' + data["username"] + '</button>');
@@ -170,7 +171,7 @@ function logon(){
     username = $("#username").val();
     const password = $("#password").val();
     if(username && password){
-        $.get(url + '/people/' + username, {"username":username, "password":password, "function":"login"}, function(data){
+        $.get(url + 'people/' + username, {"username":username, "password":password, "function":"login"}, function(data){
             if(data["logon"] == "true"){
                 access_token = data["access_token"];
 
@@ -207,9 +208,9 @@ function register(){
     const forename = $("#forenameR").val();
     const surname = $("#surnameR").val();
     if(usernameR && password && forename && surname){
-        $.get(url + '/accesstoken', {}, function(data){
+        $.get(url + 'accesstoken', {}, function(data){
             access_token = data["access_token"];
-            $.post(url + '/people', {"username":usernameR, "password":password, "forename":forename, "surname":surname, "access_token":access_token}, function(dat){
+            $.post(url + 'people', {"username":usernameR, "password":password, "forename":forename, "surname":surname, "access_token":access_token}, function(dat){
                 if(dat && dat["registered"] == "false"){
                     $('#registrationNote').html('<div>Username Taken.</div>');
                 } else {
@@ -226,7 +227,7 @@ function register(){
 };
 
 function updateStats(usr, sel){
-    $.get(url + '/people/' + usr, {"function":"stats"}, function(data){
+    $.get(url + 'people/' + usr, {"function":"stats"}, function(data){
         if(sel == 1){
             $('#stats').html('<div>Wins: ' + data["wins"] + '</div><div>Games Played: ' + data["played"]);
         } else if(sel == 2){
@@ -237,7 +238,7 @@ function updateStats(usr, sel){
 
 function startSearch() {
     console.log(access_token);
-    $.post(url + '/people/' + username, {"status":"searching", "access_token":access_token}, function (data) {
+    $.post(url + 'people/' + username, {"status":"searching", "access_token":access_token}, function (data) {
         if (data) {
             $('#search').hide();
             $('#searching').show();
@@ -249,14 +250,14 @@ function startSearch() {
 }
 
 function getGame(){
-    $.get(url + '/people/' + username, {"function":"gameinfo"}, function(data){
+    $.get(url + 'people/' + username, {"function":"gameinfo"}, function(data){
         gameid = data["id"];
         yourSym = data["symbol"];
     });
 };
 
 function ready() {
-    $.post(url + '/people/' + username, {"status":"ready", "access_token":access_token}, function (data) {
+    $.post(url + 'people/' + username, {"status":"ready", "access_token":access_token}, function (data) {
         if (yourSym == "O"){
             oppSym = 'X';
         } else {
@@ -266,7 +267,7 @@ function ready() {
 };
 
 function startGame(){
-    $.get(url + '/games/' + gameid, {"function":"load"}, function(data){
+    $.get(url + 'games/' + gameid, {"function":"load"}, function(data){
         var stats = updateStats(data[oppSym], 2);
 
         $('#searching').hide();
@@ -281,7 +282,7 @@ function move(b) {
         sector = b.toString()[0];
         pos = b.toString()[1];
 
-        $.post(url + '/games/' + gameid, { "function":"move", "s":sector, "p":pos, "symbol":yourSym, "access_token":access_token }, function (data) {
+        $.post(url + 'games/' + gameid, { "function":"move", "s":sector, "p":pos, "symbol":yourSym, "access_token":access_token }, function (data) {
             if (data["playable"] == "true") {
                 $('#' + b).html('<span>' + yourSym + '</span>');
                 drawMove(yourSym, b);
@@ -291,7 +292,7 @@ function move(b) {
 };
 
 function updateBoard() {
-    $.get(url + '/games/' + gameid, { "function":"update" }, function (data) {
+    $.get(url + 'games/' + gameid, { "function":"update" }, function (data) {
         if(data["symbol"] == "X" || data["symbol"] == "O"){
             drawMove(data["symbol"], data["move"], data["win"]);
         };
@@ -382,7 +383,7 @@ function highlightSec(secs){
 };
 
 function home(){
-    $.post(url + '/people/' + username, {"status":"standby", "access_token":access_token}, function(){
+    $.post(url + 'people/' + username, {"status":"standby", "access_token":access_token}, function(){
         $('#player2').html('');
         $('#search').show();
         $('#result').html('');
@@ -395,7 +396,7 @@ function home(){
 
 function invite(usr){
     console.log(usr);
-    $.post(url + '/invite/' + usr, {"access_token":access_token, "inviter":username, "function":"invite"}, function(data){
+    $.post(url + 'invite/' + usr, {"access_token":access_token, "inviter":username, "function":"invite"}, function(data){
         if(data["invited"] == "true"){
             $('#invitee').html(usr);
             $('#search').hide();
@@ -408,13 +409,13 @@ function invite(usr){
 };
 
 function cancelInvite(){
-    $.post(url + '/invite', {"access_token":access_token, "cancel":"true", "inviter":username}, function(data){
+    $.post(url + 'invite', {"access_token":access_token, "cancel":"true", "inviter":username}, function(data){
         home();
     });
 };
 
 function checkInvite(){
-    $.get(url + '/invite/' + username, {}, function(data){
+    $.get(url + 'invite/' + username, {}, function(data){
         if(data[0]){
             const opp = data[0];
             $('#inviter').html(opp);
@@ -433,7 +434,7 @@ function accept(decision){
         d = "decline"
     };
     console.log(d);
-    $.post(url + '/invite/' + username, {"access_token":access_token, "function":d}, function(data){
+    $.post(url + 'invite/' + username, {"access_token":access_token, "function":d}, function(data){
         closeNav('inviteoverlay');
         if(data == 1){
             $('#search').hide();
@@ -446,7 +447,7 @@ function accept(decision){
 
 
 function status() {
-    $.get(url + '/people/' + username, { "function":"status" }, function (data) {
+    $.get(url + 'people/' + username, { "function":"status" }, function (data) {
         if (data["status"] == 'standby') {
             if(!standby){
                 home();
