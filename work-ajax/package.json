@@ -1,9 +1,0 @@
-{
-    "name": "web-programming-coursework",
-    "version": "0.0.1",
-    "description": "web programming coursework",
-    "dependencies": {
-        "express": "^4.16.4",
-        "uuid": "^3.3.2"
-    }
-}
