@@ -311,13 +311,15 @@ function timeoutCheck() {
     for(i = 0; i < people.length; i++){
         people[i]["timeout"] += 3000;
         if(people[i]["status"] != "away" || people[i]["status"] != "offline"){
-            if(people[i]["timeout"] > 600000){
-                people[i]["status"] == "offline";
-                const auth = people[i]["access_token"];
-                validTokens.splice(validTokens.indexOf(auth),1);
-                people[i]["access_token"] = "";
-            } else if(people[i]["timeout"] > 30000 && people[i]["timeout"] < 600000){
-                people[i]["status"] = "away";
+            if(people[i]["timeout"] > 30000){
+                if(people[i]["timeout"] > 600000){
+                    people[i]["status"] == "offline";
+                    const auth = people[i]["access_token"];
+                    validTokens.splice(validTokens.indexOf(auth),1);
+                    people[i]["access_token"] = "";
+                } else {
+                    people[i]["status"] = "away";
+                };
             };
         };
     };
