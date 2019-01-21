@@ -28,7 +28,20 @@
     display: block;
 }
 
-.overlay2{
+.overlayOffline{
+    height: 100%;
+    width: 0%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(200,200,200,0.6);
+    overflow-x: hidden;
+    margin: 0%;
+    display: block;
+}
+
+.overlayAway{
     height: 100%;
     width: 0%;
     position: fixed;
