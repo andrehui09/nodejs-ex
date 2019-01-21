@@ -188,7 +188,7 @@ app.post('/people', function (req, res) {
             "password": req.body["password"],
             "forename": req.body["forename"],
             "surname": req.body["surname"],
-            "access_token": req.body["access_token"],
+            "access_token": "",
             "stats": { "wins": "0", "played": "0" },
             "status": "offline",
             "game": { "id": "", "symbol": "" },
@@ -196,6 +196,7 @@ app.post('/people', function (req, res) {
         };
         people.push(newPerson);
         res.send({ "registered": "true" });
+        validTokens.splice(validTokens.indexOf(req.body["access_token"],1));
     } else {
         res.sendStatus(403);
     };
