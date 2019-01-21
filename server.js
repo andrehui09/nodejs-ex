@@ -310,7 +310,7 @@ function matchmaker() {
 function timeoutCheck() {
     for(i = 0; i < people.length; i++){
         people[i]["timeout"] += 3000;
-        if(people[i]["status"] != "away" || people[i]["status"] != "offline"){
+        if(people[i]["status"] != "offline"){
             if(people[i]["timeout"] > 30000){
                 if(people[i]["timeout"] > 600000){
                     people[i]["status"] == "offline";
