@@ -217,7 +217,7 @@ app.get('/people/:username', function (req, res) {
     for (i = 0; i < people.length; i++) {
         p = people[i];
         if (p["username"] == username) {
-            user = p;
+            user = i;
         };
     };
 
@@ -226,16 +226,16 @@ app.get('/people/:username', function (req, res) {
     } else {
         if (req.query["function"] == "login") {
             var token;
-            if (user["password"] == req.query["password"]) {
-                if (p["access_token"] == "") {
+            if (people[i]["password"] == req.query["password"]) {
+                if (people[i]["access_token"] == "") {
                     token = uuid().toString();
-                    p["access_token"] = token;
+                    people[i]["access_token"] = token;
                     validTokens.push(token);
                 } else {
-                    token = p["access_token"];
+                    token = people[i]["access_token"];
                 }
-                p["status"] = "standby";
-                p["online"] = "true";
+                people[i]["status"] = "standby";
+                people[i]["online"] = "true";
                 res.send({ "access_token": token, "logon": "true" });
             } else {
                 res.send({ "logon": "false" });
