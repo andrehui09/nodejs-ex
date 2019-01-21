@@ -448,6 +448,7 @@ function here(){
     $.post(url + 'people/' + username, {"access_token":access_token, "status": "standby"}, function(data){
         closeNav('away');
         console.log('closed', data);
+        window.setInterval(status, 2000);
     });
 };
 
@@ -457,6 +458,9 @@ function away(){
     });
 };
 
+function stop(){
+    window.clearInterval(status);
+};
 
 
 
