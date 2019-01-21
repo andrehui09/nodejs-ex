@@ -311,7 +311,7 @@ function matchmaker() {
 function timeoutCheck() {
     for(i = 0; i < people.length; i++){
         people[i]["timeout"] += 3000;
-        if(people[i]["timeout"] > 5000 && people[i]["status"] != "offline"){
+        if(people[i]["timeout"] > 10000 && people[i]["status"] != "offline"){
             people[i]["status"] == "offline";
             const auth = people[i]["access_token"];
             validTokens.splice(validTokens.indexOf(auth),1);
