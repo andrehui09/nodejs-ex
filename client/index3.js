@@ -172,8 +172,7 @@ function logon(){
     username = $("#username").val();
     const password = $("#password").val();
     if(username && password){
-        $.get(url + 'people/' + username, {"username":username, "password":password, "function":"login"}, function(data, textStatus){
-            console.log(textStatus);
+        $.get(url + 'people/' + username, {"username":username, "password":password, "function":"login"}, function(data){
             if(data["logon"] == "true"){
                 access_token = data["access_token"];
 
@@ -194,7 +193,7 @@ function logon(){
                 $('#logonNote').html('Incorrect username/password, please try again.')
             };
             console.log(data);
-        });
+        }).fail(function(){$('#logonNote').html('Username does not exist.');});
     } else {
         $('#logonNote').html('Make sure all fields are filled.')
     };
