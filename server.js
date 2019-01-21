@@ -360,16 +360,16 @@ app.get('/games/:gid', function (req, res) {
 app.post('/games/:gid', function (req, res) {
     const game = games[req.params["gid"]];
     
-   
+    const symbol = req.body["symbol"]
     const s = req.body["s"];
     const p = req.body["p"];
 
     if (validTokens.includes(req.body["access_token"])) {
         if (req.body["function"] == "forfeit") {
-            const sym = req.body["symbol"]
-            var loser = findPlayer(game["players"][sym]);
+            
+            var loser = findPlayer(game["players"][symbol]);
             var winner;
-            if (sym == "O"){
+            if (symbol == "O"){
                 winner = findPlayer(game["players"]["X"]);
             } else {
                 winner = findPlayer(game["players"]["O"]);
