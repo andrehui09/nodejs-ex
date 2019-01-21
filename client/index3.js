@@ -172,7 +172,8 @@ function logon(){
     username = $("#username").val();
     const password = $("#password").val();
     if(username && password){
-        $.get(url + 'people/' + username, {"username":username, "password":password, "function":"login"}, function(data){
+        $.get(url + 'people/' + username, {"username":username, "password":password, "function":"login"}, function(data, textStatus){
+            console.log(textStatus);
             if(data["logon"] == "true"){
                 access_token = data["access_token"];
 
