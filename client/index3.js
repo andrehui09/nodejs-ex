@@ -14,6 +14,7 @@ var started = false;
 var finalupdate = false;
 var invitesent = false;
 var url = window.location.href;
+var pollInterval;
 console.log(url);
 
 const tileRange = {
@@ -181,7 +182,7 @@ function logon(){
                 refreshPlayers();
 
                 if (!intervalSet) {
-                    window.setInterval(status, 700);
+                    pollInterval = window.setInterval(status, 700);
                     window.setInterval(updateChat, 700);
                     window.setInterval(checkInvite, 2000);
                     intervalSet = true;
@@ -459,7 +460,7 @@ function away(){
 };
 
 function stop(){
-    window.clearInterval(status);
+    window.clearInterval(pollInterval);
 };
 
 
