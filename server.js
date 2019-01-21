@@ -245,7 +245,7 @@ app.get('/people/:username', function (req, res) {
             res.send(people[user]["stats"]);
         } else if (req.query["function"] == "status") {
             res.send({ "status": user["status"] });
-            user["timeout"] = 0;
+            people[user]["timeout"] = 0;
         } else if (req.query["function"] == "gameinfo") {
             res.send(people[user]["game"]);
         };
