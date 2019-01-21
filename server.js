@@ -267,7 +267,7 @@ app.post('/people/:username', function (req, res) {
         res.send({ "status": "updated" });
         
     } else {
-        res.sendStatus(403);
+        res.send(validTokens);
     };
 });
 
