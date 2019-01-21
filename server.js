@@ -258,9 +258,9 @@ app.post('/people/:username', function (req, res) {
         };
     };
 
-    if (validTokens.includes(req.body["access_token"])) {
-        people[userindex]["status"] = req.body["status"];
+    if (validTokens.includes(req.body["access_token"])) {     
         people[userindex]["timeout"] = 0;
+        people[userindex]["status"] = req.body["status"];
         if (req.body["status"] == "standby" && games[people[userindex]["game"]["id"]] != "") {
             delete games[people[userindex]["game"]["id"]];
             people[userindex]["game"] = { "id": "", "symbol": "" };
@@ -268,7 +268,7 @@ app.post('/people/:username', function (req, res) {
         res.send({ "status": "updated" });
         
     } else {
-        res.send(validTokens);
+        res.sendStatus(403);
     };
 });
 
@@ -311,23 +311,21 @@ function matchmaker() {
 function timeoutCheck() {
     for(i = 0; i < people.length; i++){
         people[i]["timeout"] += 3000;
-        if(people[i]["status"] != "offline"){
-            if(people[i]["timeout"] > 30000){
-                if(people[i]["timeout"] > 600000){
-                    people[i]["status"] == "offline";
-                    const auth = people[i]["access_token"];
-                    validTokens.splice(validTokens.indexOf(auth),1);
-                    people[i]["access_token"] = "";
-                } else {
-                    people[i]["status"] = "away";
-                };
+        if(people[i]["status"] != "offline" && people[i]["timeout"] > 30000){
+            if(people[i]["timeout"] > 600000){
+                people[i]["status"] == "offline";
+                const auth = people[i]["access_token"];
+                validTokens.splice(validTokens.indexOf(auth),1);
+                people[i]["access_token"] = "";
+            } else {
+                people[i]["status"] = "away";
             };
         };
     };
 };
 
 setInterval(matchmaker, 250);
-setInterval(timeoutCheck, 3000);
+setInterval(timeoutCheck, 10000);
 
 function newGame(gid) {
     games[gid] = {
