@@ -233,7 +233,7 @@ app.get('/people/:username', function (req, res) {
                     validTokens.push(token);
                 } else {
                     token = people[user]["access_token"];
-                }
+                };
                 people[user]["status"] = "standby";
                 people[user]["online"] = "true";
                 res.send({ "access_token": token, "logon": "true" });
@@ -244,7 +244,7 @@ app.get('/people/:username', function (req, res) {
         } else if (req.query["function"] == "stats") {
             res.send(people[user]["stats"]);
         } else if (req.query["function"] == "status") {
-            res.send({ "status": user["status"] });
+            res.send({ "status": people[user]["status"] });
             people[user]["timeout"] = 0;
         } else if (req.query["function"] == "gameinfo") {
             res.send(people[user]["game"]);
