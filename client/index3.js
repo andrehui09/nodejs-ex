@@ -122,13 +122,12 @@ function updateChat() {
 
 function sendMsg() {
     message = $('#msg').val();
-    if (username) {
+    if (username && message) {
         $.post(url + 'chat', { "access_token":access_token, "username":username, "message":message }, function (data) {
             if(data["posted"] == "true"){
                 document.getElementById('msgbox').reset();
             };
         });
-        console.log("sent");
     };
     return false;
 };
@@ -220,7 +219,7 @@ function register(){
                     $('#logonNote').html('Registration successful! You can now log in.');
                     showLForm();
                 };
-            });
+            }).fail(function(){$('#registrationNote').html('<div>Registration failed, please try again in a bit.</div>');});
         });
         
     } else {
@@ -468,6 +467,16 @@ function start(){
     pollInterval = window.setInterval(status, 700);
 };
 
+function openR(){
+    openNav('overlayR');
+    $('#logon')[0].reset();
+}
+
+function cancelR(){
+    closeNav('overlayR');
+    $('#register')[0].reset();
+};
+
 
 
 
@@ -554,4 +563,5 @@ function status() {
 
 $('#logon').on('submit', logon);
 $('#register').on('submit', register);
+$('#register').on('cancelR')
 $('#msgbox').on('submit', sendMsg);
