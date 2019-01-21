@@ -465,7 +465,9 @@ function status() {
             if(invitesent){
                 invitesent = false;
                 home();
-            }
+            };
+            closeNav('offline');
+            closeNav('away');
 
         } else if (data["status"] == 'searching') {
             

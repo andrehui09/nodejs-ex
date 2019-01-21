@@ -118,7 +118,7 @@ var people = [{
     "stats": { "wins": "", "played": "" },
     "status": "offline",
     "game": { "id": "", "symbol": "" },
-    "timeout": 0
+    "timeout": 600000
 }]
 
 var validTokens = ["concertina"];
