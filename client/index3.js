@@ -181,8 +181,8 @@ function logon(){
                 refreshPlayers();
 
                 if (!intervalSet) {
-                    window.setInterval(status, 1000);
-                    window.setInterval(updateChat, 1000);
+                    window.setInterval(status, 300);
+                    window.setInterval(updateChat, 300);
                     window.setInterval(checkInvite, 2000);
                     intervalSet = true;
                 };

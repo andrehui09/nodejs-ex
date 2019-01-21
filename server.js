@@ -237,7 +237,6 @@ app.get('/people/:username', function (req, res) {
             } else {
                 res.send({ "logon": "false" });
             };
-            console.log(validTokens, token);
 
         } else if (req.query["function"] == "stats") {
             res.send(people[user]["stats"]);
