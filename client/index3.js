@@ -264,6 +264,7 @@ function ready() {
         } else {
             oppSym = 'O';
         };
+        $('#ready').hide();
     });
 };
 
