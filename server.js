@@ -222,10 +222,9 @@ app.get('/people/:username', function (req, res) {
         res.sendStatus(404);
     } else {
         if (req.query["function"] == "login") {
-            var token;
             if (people[user]["password"] == req.query["password"]) {
                 
-                token = uuid().toString();
+                const token = uuid().toString();
                 people[user]["access_token"] = token;
                 validTokens.push(token);
 
