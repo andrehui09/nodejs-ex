@@ -360,28 +360,29 @@ app.get('/games/:gid', function (req, res) {
 app.post('/games/:gid', function (req, res) {
     const game = games[req.params["gid"]];
     
-    if (req.body["function"] == "forfeit") {
-        const sym = req.body["symbol"]
-        var loser = findPlayer(game["players"][sym]);
-        var winner;
-        if (sym == "O"){
-            winner = findPlayer(game["players"]["X"]);
+   
+    const s = req.body["s"];
+    const p = req.body["p"];
+
+    if (validTokens.includes(req.body["access_token"])) {
+        if (req.body["function"] == "forfeit") {
+            const sym = req.body["symbol"]
+            var loser = findPlayer(game["players"][sym]);
+            var winner;
+            if (sym == "O"){
+                winner = findPlayer(game["players"]["X"]);
+            } else {
+                winner = findPlayer(game["players"]["O"]);
+            };
+            people[loser]["status"] = "loss";
+            people[loser]["stats"]["played"]++;
+            people[winner]["status"] = "win";
+            people[winner]["stats"]["played"]++;
+            people[winner]["stats"]["wins"]++;
+            delete games[req.params["gid"]];
+            res.send({});
+
         } else {
-            winner = findPlayer(game["players"]["O"]);
-        };
-        people[loser]["status"] = "loss";
-        people[loser]["stats"]["played"]++;
-        people[winner]["status"] = "win";
-        people[winner]["stats"]["played"]++;
-        people[winner]["stats"]["wins"]++;
-        delete games[req.params["gid"]];
-
-
-    } else {
-        const s = req.body["s"];
-        const p = req.body["p"];
-
-        if (validTokens.includes(req.body["access_token"])) {
             if (game["board"]["playableS"].includes(req.body["s"])) {
                 playable = "true";
 
@@ -402,9 +403,9 @@ app.post('/games/:gid', function (req, res) {
                 playable = "false";
             };
             res.send({ "playable": playable });
-        } else {
-            res.sendStatus(403);
         };
+    } else {
+            res.sendStatus(403);
     };
 });
 
