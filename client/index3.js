@@ -451,6 +451,12 @@ function here(){
     });
 };
 
+function away(){
+    $.post(url + 'people/' + username, {"access_token":access_token, "status": "away"}, function(data){
+        console.log('closed', data);
+    });
+};
+
 
 
 
@@ -532,7 +538,7 @@ function status() {
         } else if (data["status"] == 'away') {
             openNav('away'); // create overlay asking if user is away/logging out in x seconds
         };
-        console.log(data["status"]);
+        console.log(data);
     });
 };
 
