@@ -317,7 +317,7 @@ function timeoutCheck() {
                 const auth = people[i]["access_token"];
                 validTokens.splice(validTokens.indexOf(auth),1);
                 people[i]["access_token"] = "";
-            } else if(people[i]["timeout"] > 30000){
+            } else if(people[i]["timeout"] > 30000 && people[i]["timeout"] < 600000){
                 people[i]["status"] = "away";
             };
         };
