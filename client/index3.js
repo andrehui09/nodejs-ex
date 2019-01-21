@@ -392,7 +392,7 @@ function forfeit(){
         confirm = true;
         $('#forfeitButton').val('Are You Sure?');
     } else {
-        $.post(url + 'games/' + gameid, {"access_token":access_token, "symbol":yourSym, "function":forfeit}, function(data){
+        $.post(url + 'games/' + gameid, {"access_token":access_token, "symbol":yourSym, "function":"forfeit"}, function(data){
             confirm = false;
             $('#forfeitButton').val('Forfeit');
             console.log(confirm);
