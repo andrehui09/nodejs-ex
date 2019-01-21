@@ -443,6 +443,12 @@ function accept(decision){
     });
 };
 
+function here(){
+    $.post(url + 'people/' + username, {"access_token":access_token, "status": "standby"}, function(data){
+        closeNav('away');
+    };
+}
+
 
 
 
@@ -515,9 +521,12 @@ function status() {
                 checked = true;
             };
 
-        } else if (data["status"] == 'nologon') {
-            openNav('overlay2');
+        } else if (data["status"] == 'offline') {
+            closeNav('away');
+            openNav('offline');
 
+        } else if (data["status"] == 'away') {
+            openNav('away'); // create overlay asking if user is away/logging out in x seconds
         };
         console.log(data["status"]);
     });
