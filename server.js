@@ -226,16 +226,16 @@ app.get('/people/:username', function (req, res) {
     } else {
         if (req.query["function"] == "login") {
             var token;
-            if (people[i]["password"] == req.query["password"]) {
-                if (people[i]["access_token"] == "") {
+            if (people[user]["password"] == req.query["password"]) {
+                if (people[user]["access_token"] == "") {
                     token = uuid().toString();
-                    people[i]["access_token"] = token;
+                    people[user]["access_token"] = token;
                     validTokens.push(token);
                 } else {
-                    token = people[i]["access_token"];
+                    token = people[user]["access_token"];
                 }
-                people[i]["status"] = "standby";
-                people[i]["online"] = "true";
+                people[user]["status"] = "standby";
+                people[user]["online"] = "true";
                 res.send({ "access_token": token, "logon": "true" });
             } else {
                 res.send({ "logon": "false" });
