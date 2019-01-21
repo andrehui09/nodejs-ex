@@ -242,12 +242,12 @@ app.get('/people/:username', function (req, res) {
             };
 
         } else if (req.query["function"] == "stats") {
-            res.send(user["stats"]);
+            res.send(people[user]["stats"]);
         } else if (req.query["function"] == "status") {
             res.send({ "status": user["status"] });
             user["timeout"] = 0;
         } else if (req.query["function"] == "gameinfo") {
-            res.send(user["game"]);
+            res.send(people[user]["game"]);
         };
     };
 });
