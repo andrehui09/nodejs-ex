@@ -310,9 +310,9 @@ function matchmaker() {
 
 function timeoutCheck() {
     for(i = 0; i < people.length; i++){
-        people[i]["timeout"] += 3000;
-        if(people[i]["status"] != "offline" && people[i]["timeout"] > 30000){
-            if(people[i]["timeout"] > 600000){
+        people[i]["timeout"] += 60000;
+        if(people[i]["status"] != "offline" && people[i]["timeout"] > 300000){
+            if(people[i]["timeout"] > 1800000){
                 people[i]["status"] == "offline";
                 const auth = people[i]["access_token"];
                 validTokens.splice(validTokens.indexOf(auth),1);
@@ -325,7 +325,7 @@ function timeoutCheck() {
 };
 
 setInterval(matchmaker, 250);
-setInterval(timeoutCheck, 10000);
+setInterval(timeoutCheck, 60000);
 
 function newGame(gid) {
     games[gid] = {

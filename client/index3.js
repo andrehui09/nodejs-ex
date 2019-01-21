@@ -192,6 +192,7 @@ function logon(){
             } else {
                 $('#logonNote').html('Incorrect username/password, please try again.')
             };
+            console.log(data);
         });
     } else {
         $('#logonNote').html('Make sure all fields are filled.')
