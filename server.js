@@ -290,7 +290,6 @@ function matchmaker() {
             people[Object.values(searching)[i]]["game"]["id"] = gid;
             people[Object.values(searching)[i]]["game"]["symbol"] = symbols[i];
             people[Object.values(searching)[i]]["status"] = "gamefound";
-            people[Object.values(searching)[i]]["stats"]["played"]++;
             games[gid]["players"][symbols[i]] = Object.keys(searching)[i];
         };
         delete searching[Object.keys(searching)[0]];

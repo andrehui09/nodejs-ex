@@ -393,7 +393,7 @@ function forfeit(){
         $('#forfeitButton').val('Are You Sure?');
     } else {
         $.post(url + 'games/' + gameid, {"access_token":access_token, "symbol":yourSym, "function":forfeit}, function(data){
-            
+
         });
     };
 };
@@ -527,14 +527,14 @@ function status() {
             if(!inGame){
                 checked = false;
                 inGame = true;
-                window.clearInterval(pollInterval)
-                pollInterval = window.setInterval(status, 600);
             };
 
         } else if (data["status"] == 'turn') {
             if(!started){
                 startGame();
                 started = true;
+                window.clearInterval(pollInterval)
+                pollInterval = window.setInterval(status, 600);
             };
             yourTurn = true;
             if (!updated) {
@@ -546,6 +546,8 @@ function status() {
             if(!started){
                 startGame();
                 started = true;
+                window.clearInterval(pollInterval)
+                pollInterval = window.setInterval(status, 600);
             };
             yourTurn = false;
             updated = false;
