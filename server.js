@@ -253,7 +253,7 @@ app.post('/people/:username', function (req, res) {
 
     for (i = 0; i < people.length; i++) {
         p = people[i];
-        if (p["username"] == username) {
+        if (p["username"] == username) { 
             userindex = i;
         };
     };
