@@ -449,7 +449,7 @@ function here(){
     $.post(url + 'people/' + username, {"access_token":access_token, "status": "standby"}, function(data){
         closeNav('away');
         console.log('closed', data);
-        window.setInterval(status, 2000);
+        window.setInterval(status, 700);
     });
 };
 

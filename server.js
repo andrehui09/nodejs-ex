@@ -260,6 +260,7 @@ app.post('/people/:username', function (req, res) {
 
     if (validTokens.includes(req.body["access_token"])) {
         people[userindex]["status"] = req.body["status"];
+        people[userindex]["timeout"] = 0;
         if (req.body["status"] == "standby" && games[people[userindex]["game"]["id"]] != "") {
             delete games[people[userindex]["game"]["id"]];
             people[userindex]["game"] = { "id": "", "symbol": "" };
