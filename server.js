@@ -224,13 +224,11 @@ app.get('/people/:username', function (req, res) {
         if (req.query["function"] == "login") {
             var token;
             if (people[user]["password"] == req.query["password"]) {
-                if (people[user]["access_token"] == "") {
-                    token = uuid().toString();
-                    people[user]["access_token"] = token;
-                    validTokens.push(token);
-                } else {
-                    token = people[user]["access_token"];
-                };
+                
+                token = uuid().toString();
+                people[user]["access_token"] = token;
+                validTokens.push(token);
+
                 people[user]["status"] = "standby";
                 people[user]["online"] = "true";
                 res.send({ "access_token": token, "logon": "true" });
@@ -267,6 +265,7 @@ app.post('/people/:username', function (req, res) {
             people[userindex]["game"] = { "id": "", "symbol": "" };
         };
         res.send({ "status": "updated" });
+        
     } else {
         res.sendStatus(403);
     };
