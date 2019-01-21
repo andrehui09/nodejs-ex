@@ -186,6 +186,7 @@ function logon(){
                     window.setInterval(checkInvite, 2000);
                     intervalSet = true;
                 };
+                console.log(access_token);
 
             } else {
                 $('#logonNote').html('Incorrect username/password, please try again.')
