@@ -463,6 +463,10 @@ function stop(){
     window.clearInterval(pollInterval);
 };
 
+function start(){
+    pollInterval = window.setInterval(status, 700);
+};
+
 
 
 
