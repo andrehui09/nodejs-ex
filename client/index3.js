@@ -15,7 +15,9 @@ var finalupdate = false;
 var invitesent = false;
 var url = window.location.href;
 var pollInterval;
-console.log(url);
+var inGame = false;
+var confirm = false;
+
 
 const tileRange = {
     "1": {"min": "8", "max": "58"},
@@ -181,9 +183,9 @@ function logon(){
                 refreshPlayers();
 
                 if (!intervalSet) {
-                    pollInterval = window.setInterval(status, 700);
-                    window.setInterval(updateChat, 700);
-                    window.setInterval(checkInvite, 2000);
+                    pollInterval = window.setInterval(status, 2000);
+                    window.setInterval(updateChat, 2000);
+                    window.setInterval(checkInvite, 5000);
                     intervalSet = true;
                 };
                 console.log(access_token);
@@ -385,6 +387,17 @@ function highlightSec(secs){
     
 };
 
+function forfeit(){
+    if(!confirm){
+        confirm = true;
+        $('#forfeitButton').val('Are You Sure?');
+    } else {
+        $.post(url + 'games/' + gameid, {"access_token":access_token, "symbol":yourSym, "function":forfeit}, function(data){
+            
+        });
+    };
+};
+
 function home(){
     $.post(url + 'people/' + username, {"status":"standby", "access_token":access_token}, function(){
         $('#player2').html('');
@@ -394,6 +407,9 @@ function home(){
         updateStats(username, 1);
         setCanvas('/client/backgroundopac.png');
         $('#home').hide();
+        window.clearInterval(pollInterval);
+        pollInterval = window.setInterval(status, 2000);
+        inGame = false;
     });
 };
 
@@ -470,11 +486,13 @@ function start(){
 function openR(){
     openNav('overlayR');
     $('#logon')[0].reset();
+    $('#logonNote').html("");
 }
 
 function cancelR(){
     closeNav('overlayR');
     $('#register')[0].reset();
+    $('#registrationNote').html("");
 };
 
 
@@ -506,7 +524,12 @@ function status() {
             getGame();
 
         } else if (data["status"] == 'ready') {
-            checked = false;
+            if(!inGame){
+                checked = false;
+                inGame = true;
+                window.clearInterval(pollInterval)
+                pollInterval = window.setInterval(status, 600);
+            };
 
         } else if (data["status"] == 'turn') {
             if(!started){
