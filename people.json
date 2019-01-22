@@ -4,8 +4,8 @@
     "forename": "Delia",
     "surname": "Derbyshire",
     "access_token": "concertina",
-    "stats": { "wins": 0, "played": 0 },
+    "stats": { "wins": "", "played": "" },
     "status": "offline",
     "game": { "id": "", "symbol": "" },
-    "timeout": 600000
+    "timeout": 0
 }]

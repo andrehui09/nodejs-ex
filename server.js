@@ -110,12 +110,10 @@ var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
 
-fs.writeFileSync('people.json', {});
 var people;
-fs.readFileSync('people.json', (err, data) => {
+fs.readFile('./people.json', (err, data) => {
     if (err) throw err;
     people = JSON.parse(data);
-    console.log(data);
 });
 
 var validTokens = ["concertina"];
@@ -194,7 +192,7 @@ app.post('/people', function (req, res) {
         people.push(newPerson);
         res.send({ "registered": "true" });
         validTokens.splice(validTokens.indexOf(req.body["access_token"],1));
-		fs.writeFileSync('people.json', JSON.stringify(people));
+		fs.writeFile('people.json', JSON.stringify(people));
     } else {
         res.sendStatus(403);
     };
