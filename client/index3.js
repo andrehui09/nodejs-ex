@@ -299,8 +299,8 @@ function move(b) {
 
 function updateBoard() {
     $.get(url + 'games/' + gameid, { "function":"update" }, function (data) {
-        if(data["symbol"] == "X" || data["symbol"] == "O"){
-            drawMove(data["symbol"], data["move"], data["win"]);
+        if(data[0]["symbol"] == "X" || data[0]["symbol"] == "O"){
+            drawMove(data[0]["symbol"], data[0]["move"], data[0]["win"]);
         };
     });
 };

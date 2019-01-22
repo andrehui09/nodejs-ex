@@ -327,7 +327,7 @@ app.get('/games/:gid', function (req, res) {
         if (f == "load") {
             res.send(games[gid]["players"]);
         } else if (f == "update") {
-            res.send(games[gid]["board"]["lastmove"]);
+            res.send([games[gid]["board"]["lastmove"], games[gid]["board"]["playableS"]]);
         };
     } else {
         res.sendStatus(404);
@@ -395,6 +395,9 @@ function updateBoard(gid, s, p, sym) {
         l = check[p][k];
         if (game["board"][s][k] == sym && game["board"][s][l] == sym) {
             game["board"][s]["win"] = sym;
+            game["board"]["lastmove"]["win"] = "true";
+        } else {
+            game["board"]["lastmove"]["win"] = "";
         };
     };
 
