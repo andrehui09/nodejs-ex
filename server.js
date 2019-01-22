@@ -2,7 +2,8 @@
 var express = require('express'),
     app     = express(),
     serv    = require('http').Server(app),
-    morgan  = require('morgan');
+    morgan  = require('morgan'),
+	fs		= require('fs');
     
 Object.assign=require('object-assign')
 
@@ -577,9 +578,9 @@ app.post('/dc', function (req, res) {
 });
 
 function toJSON(jsonObj, name){
-	temp = JSON.stringify(jsonObj);
-	localStorage.setItem(name, temp);
-};
+	fs.writeFile(name + '.json', jsonObj, function(err){
+		console.log(err);
+	});
 
 function loadJSON(jsonObj, name){
 	temp = localStorage.getItem(name);
