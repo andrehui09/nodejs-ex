@@ -111,11 +111,10 @@ var games = {};
 var invites = {};
 
 var people;
-fs.readFileSync('people.json', function(err, data){
-    if (err){
-        console.log(1, err);
-    };
+fs.readFileSync('people.json', (err, data) => {
+    if (err) throw err;
     people = JSON.parse(data);
+    console.log(data);
 });
 
 var validTokens = ["concertina"];
