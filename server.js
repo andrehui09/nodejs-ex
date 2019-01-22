@@ -112,7 +112,9 @@ var invites = {};
 
 var people;
 fs.readFileSync('people.json', function(err, data){
-    if (err) throw err;
+    if (err){
+        console.log(1, err);
+    };
     people = JSON.parse(data);
 });
 
