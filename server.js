@@ -125,9 +125,10 @@ fs.readFile('./check.json', (err, data) => {
     check = JSON.parse(data);
 });
 
+var gameTemplate;
 fs.readFile('./game.json', (err, data) => {
     if (err) throw err;
-    const gameTemplate = JSON.parse(data);
+    gameTemplate = JSON.parse(data);
     console.log(JSON.parse(data));
 });
 
@@ -271,7 +272,7 @@ function matchmaker() {
     if (Object.keys(searching).length >= 2) {
         var gid = Math.random().toString();
         var symbols = ["O", "X"];
-        games[gid] = gameTemplate;
+        games[gid] = JSON.parse(JSON.stringify(gameTemplate));
 
         for (i = 0; i < 2; i++) {
             people[Object.values(searching)[i]]["game"]["id"] = gid;
@@ -284,9 +285,11 @@ function matchmaker() {
 
     };
 
+    console.log(games);
     for (var key in games) {
         var p1 = games[key]["players"]["O"];
         var p2 = games[key]["players"]["X"];
+        console.log(p1, p2, findPlayer(p1), findPlayer(p2));
         if (people[findPlayer(p1)]["status"] == "ready" && people[findPlayer(p2)]["status"] == "ready") {
             people[findPlayer(p1)]["status"] = "turn";
             people[findPlayer(p2)]["status"] = "wait";
@@ -316,12 +319,24 @@ setInterval(matchmaker, 250);
 setInterval(timeoutCheck, 60000);
 
 function newGame(gid) {
-    fs.readFileSync('./game.json', (err, data) => {
-        if (err) throw err;
-        games[gid] = JSON.parse(data);
-        console.log(JSON.parse(data));
-    });
-}
+    games[gid] = {
+        "players": { "O": "", "X": "" },
+        "board": {
+            "1": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "2": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "3": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "4": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "5": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "6": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "7": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "8": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "9": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
+            "win": "",
+            "playableS": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+            "lastmove": { "symbol": "", "move": "" }
+        }
+    };
+};
 
 app.get('/games/:gid', function (req, res) {
     const gid = req.params["gid"];
