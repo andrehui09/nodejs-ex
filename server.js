@@ -110,17 +110,11 @@ var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
 
-var people = [{
-    "username": "doctorwhocomposer",
-    "password": "",
-    "forename": "Delia",
-    "surname": "Derbyshire",
-    "access_token": "concertina",
-    "stats": { "wins": 0, "played": 0 },
-    "status": "offline",
-    "game": { "id": "", "symbol": "" },
-    "timeout": 600000
-}]
+var people;
+fs.readFileSync('people.json', function(err, data){
+    if (err) throw err;
+    people = JSON.parse(data);
+});
 
 var validTokens = ["concertina"];
 
@@ -198,7 +192,7 @@ app.post('/people', function (req, res) {
         people.push(newPerson);
         res.send({ "registered": "true" });
         validTokens.splice(validTokens.indexOf(req.body["access_token"],1));
-		toJSON(people, "people");
+		fs.writeFileSync('people.json', JSON.stringify(people));
     } else {
         res.sendStatus(403);
     };

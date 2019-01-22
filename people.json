@@ -1,0 +1,11 @@
+[{
+    "username": "doctorwhocomposer",
+    "password": "",
+    "forename": "Delia",
+    "surname": "Derbyshire",
+    "access_token": "concertina",
+    "stats": { "wins": 0, "played": 0 },
+    "status": "offline",
+    "game": { "id": "", "symbol": "" },
+    "timeout": 600000
+}]
