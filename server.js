@@ -125,7 +125,7 @@ fs.readFile('./check.json', (err, data) => {
     check = JSON.parse(data);
 });
 
-fs.readFileSync('./game.json', (err, data) => {
+fs.readFile('./game.json', (err, data) => {
     if (err) throw err;
     const gameTemplate = JSON.parse(data);
     console.log(JSON.parse(data));
