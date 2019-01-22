@@ -514,6 +514,22 @@ function cancelR(){
     $('#registrationNote').html("");
 };
 
+function logout(){
+    $.post(url + 'people/' + username, { "access_token":access_token, "status":"offline" }, function (data) {
+        location.reload();
+    });
+};
+
+function play(){
+    $('#about').hide();
+    $('#play').show();
+};
+
+function about(){
+    $('#play').hide();
+    $('#about').show();
+}
+
 
 
 
