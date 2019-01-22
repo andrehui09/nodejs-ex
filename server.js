@@ -581,6 +581,7 @@ function toJSON(jsonObj, name){
 	fs.writeFile(name + '.json', jsonObj, function(err){
 		console.log(err);
 	});
+};
 
 function loadJSON(jsonObj, name){
 	temp = localStorage.getItem(name);
