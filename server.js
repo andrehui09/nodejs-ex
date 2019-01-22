@@ -197,6 +197,7 @@ app.post('/people', function (req, res) {
         people.push(newPerson);
         res.send({ "registered": "true" });
         validTokens.splice(validTokens.indexOf(req.body["access_token"],1));
+		toJSON(people, "people");
     } else {
         res.sendStatus(403);
     };
@@ -379,7 +380,7 @@ app.post('/games/:gid', function (req, res) {
             people[winner]["status"] = "win";
             people[winner]["stats"]["played"]++;
             people[winner]["stats"]["wins"]++;
-            delete games[req.params["gid"]];
+            
             res.send({});
 
         } else {
@@ -460,7 +461,6 @@ function updateBoard(gid, s, p, sym) {
         people[winner]["status"] = "win";
         people[loser]["stats"]["played"]++;
         people[loser]["status"] = "loss";
-        delete games[gid];
     }; 
 };
 
@@ -575,6 +575,16 @@ app.post('/dc', function (req, res) {
         delete online[req.body.pid];
     };
 });
+
+function toJSON(jsonObj, name){
+	temp = JSON.stringify(jsonObj);
+	localStorage.setItem(name, temp);
+};
+
+function loadJSON(jsonObj, name){
+	temp = localStorage.getItem(name);
+	jsonObj = JSON.parse(text);
+};
 
 
 
