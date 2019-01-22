@@ -4,7 +4,7 @@ var express = require('express'),
     serv    = require('http').Server(app),
     morgan  = require('morgan'),
 	fs		= require('fs');
-    
+
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
@@ -26,7 +26,7 @@ if (mongoURL == null) {
     mongoPassword = process.env[mongoServiceName + '_PASSWORD'];
     mongoUser = process.env[mongoServiceName + '_USER'];
 
-  // If using env vars from secret from service binding  
+  // If using env vars from secret from service binding
   } else if (process.env.database_name) {
     mongoDatabase = process.env.database_name;
     mongoPassword = process.env.password;
@@ -226,7 +226,7 @@ app.get('/people/:username', function (req, res) {
     } else {
         if (req.query["function"] == "login") {
             if (people[user]["password"] == req.query["password"]) {
-                
+
                 const token = uuid().toString();
                 people[user]["access_token"] = token;
                 validTokens.push(token);
@@ -255,12 +255,12 @@ app.post('/people/:username', function (req, res) {
 
     for (i = 0; i < people.length; i++) {
         p = people[i];
-        if (p["username"] == username) { 
+        if (p["username"] == username) {
             userindex = i;
         };
     };
 
-    if (validTokens.includes(req.body["access_token"])) {     
+    if (validTokens.includes(req.body["access_token"])) {
         people[userindex]["timeout"] = 0;
         people[userindex]["status"] = req.body["status"];
         if (req.body["status"] == "standby" && games[people[userindex]["game"]["id"]] != "") {
@@ -268,7 +268,7 @@ app.post('/people/:username', function (req, res) {
             people[userindex]["game"] = { "id": "", "symbol": "" };
         };
         res.send({ "status": "updated" });
-        
+
     } else {
         res.sendStatus(403);
     };
@@ -361,14 +361,14 @@ app.get('/games/:gid', function (req, res) {
 
 app.post('/games/:gid', function (req, res) {
     const game = games[req.params["gid"]];
-    
+
     const symbol = req.body["symbol"]
     const s = req.body["s"];
     const p = req.body["p"];
 
     if (validTokens.includes(req.body["access_token"])) {
         if (req.body["function"] == "forfeit") {
-            
+
             var loser = findPlayer(game["players"][symbol]);
             var winner;
             if (symbol == "O"){
@@ -381,7 +381,7 @@ app.post('/games/:gid', function (req, res) {
             people[winner]["status"] = "win";
             people[winner]["stats"]["played"]++;
             people[winner]["stats"]["wins"]++;
-            
+
             res.send({});
 
         } else {
@@ -462,7 +462,7 @@ function updateBoard(gid, s, p, sym) {
         people[winner]["status"] = "win";
         people[loser]["stats"]["played"]++;
         people[loser]["status"] = "loss";
-    }; 
+    };
 };
 
 
@@ -578,7 +578,7 @@ app.post('/dc', function (req, res) {
 });
 
 function toJSON(jsonObj, name){
-	fs.writeFile(name + '.json', jsonObj, function(err){
+	fs.writeFile(name + '.json', JSON.stringify(jsonObj), function(err){
 		console.log(err);
 	});
 };
