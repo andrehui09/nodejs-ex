@@ -55,6 +55,18 @@ const secPos = {
     "9": {"x": "384", "y": "384"}
 };
 
+const secHighlight = {
+    "1": {"x": "8", "y": "169"},
+    "2": {"x": "196", "y": "169"},
+    "3": {"x": "384", "y": "169"},
+    "4": {"x": "8", "y": "357"},
+    "5": {"x": "196", "y": "357"},
+    "6": {"x": "384", "y": "357"},
+    "7": {"x": "8", "y": "545"},
+    "8": {"x": "196", "y": "545"},
+    "9": {"x": "384", "y": "545"}
+}
+
 window.onload = function(){
     setCanvas('/client/backgroundopac.png');
     c = document.getElementById('canvas');
@@ -273,7 +285,8 @@ function ready() {
 
 function startGame(){
     $.get(url + 'games/' + gameid, {"function":"load"}, function(data){
-        var stats = updateStats(data[oppSym], 2);
+        updateStats(data[oppSym], 2);
+        highlightSec(["1","2","3","4","5","6","7","8","9"])
 
         $('#forfeit').show();
         $('#searching').hide();
@@ -291,7 +304,7 @@ function move(b) {
         $.post(url + 'games/' + gameid, { "function":"move", "s":sector, "p":pos, "symbol":yourSym, "access_token":access_token }, function (data) {
             if (data["playable"] == "true") {
                 $('#' + b).html('<span>' + yourSym + '</span>');
-                drawMove(yourSym, b);
+                updateBoard();
             };
         });
     };
@@ -301,6 +314,7 @@ function updateBoard() {
     $.get(url + 'games/' + gameid, { "function":"update" }, function (data) {
         if(data[0]["symbol"] == "X" || data[0]["symbol"] == "O"){
             drawMove(data[0]["symbol"], data[0]["move"], data[0]["win"]);
+            highlightSec(data[1]);
         };
     });
 };
@@ -335,70 +349,68 @@ function handleClick(e){
 function drawMove(sym, pos, win){
     var x;
     var y;
-    var sec;
+    var sec = pos[0];
 
     for(i = 1; i < 10; i++){
         for(j = 1; j < 10; j++){
             if(tileToSP[i.toString()][j.toString()] == pos){
                 x = tileRange[j.toString()]["min"];
                 y = tileRange[i.toString()]["min"];
-                sec = i.toString();
             };
         };
     };
 
     c = document.getElementById('canvas');
     ctx = c.getContext('2d');
-    var imgpath = '/client/small';
-
-    if(sym == 'X'){
-        imgpath += 'x';
-    } else if(sym == 'O'){
-        imgpath += 'o';
-    };
-
-    imgpath += '.png';
 
     img = new Image();
-    img.src = imgpath;
+    img.src = '/client/small' + sym.toLowerCase() + '.png';
     img.onload = function(){
         ctx.drawImage(img, parseInt(x,10), parseInt(y,10));
     };
 
     if(win == "true"){
-        var imgpath = '/client/big';
-
-        if(sym == 'X'){
-            imgpath += 'x';
-        } else if(sym == 'O'){
-            imgpath += 'o';
-        };
-
-        imgpath += '.png';
-
-        img = new Image();
-        img.src = imgpath;
-        img.onload = function(){
-            ctx.drawImage(img, parseInt(secPos[sec]["x"],10), parseInt(secPos[sec]["y"],10));
+        img2 = new Image();
+        img2.src = '/client/big' + sym.toLowerCase() + '.png';
+        img2.onload = function(){
+            ctx.drawImage(img2, parseInt(secPos[sec]["x"],10), parseInt(secPos[sec]["y"],10));
         };
     };
 };
 
 function highlightSec(secs){
-    
+    c = document.getElementById('canvas');
+    ctx = c.getContext('2d');
+    for(i = 1; i < 10; i++){
+        ctx.fillStyle = "#ffffff"
+        ctx.fillRect(secHighlight[i.toString()]["x"], secHighlight[i.toString()]["y"], 160, 6);
+    };
+    for(i = 0; i < secs.length; i++){
+        if(!finalupdate){
+            ctx.fillStyle = "#00ff00"
+            ctx.fillRect(secHighlight[secs[i]]["x"], secHighlight[secs[i]]["y"], 160, 6);
+        };
+    };
 };
 
 function forfeit(){
     if(!confirm){
         confirm = true;
-        $('#forfeitButton').val('Are You Sure?');
+        $('#forfeitButton').hide();
+        $('#forfeitConfirm').show();
     } else {
         $.post(url + 'games/' + gameid, {"access_token":access_token, "symbol":yourSym, "function":"forfeit"}, function(data){
             confirm = false;
-            $('#forfeitButton').val('Forfeit');
-            console.log(confirm);
+            $('#forfeitButton').show();
+            $('#forfeitConfirm').hide();
         });
     };
+};
+
+function cancelForfeit(){
+    confirm = false;
+    $('#forfeitButton').show();
+    $('#forfeitConfirm').hide();
 };
 
 function home(){
@@ -408,6 +420,7 @@ function home(){
         $('#result').html('');
         $('#invited').hide();
         $('#forfeit').hide();
+        $('#forfeitConfirm').hide();
         updateStats(username, 1);
         setCanvas('/client/backgroundopac.png');
         $('#home').hide();
@@ -557,19 +570,26 @@ function status() {
             updated = false;
 
         } else if (data["status"] == 'win') {
-            $('#result').html('Winner!');
-            $('#home').show();
-            started = false;
-
+            if(!finalupdate){
+                finalupdate = true;
+                highlightSec([]);
+                $('#result').html('Winner!');
+                $('#home').show();
+                $('#forfeit').hide();
+                confirm = false;
+                started = false;
+            };
         } else if (data["status"] == 'loss') {
             if(!finalupdate){
                 updateBoard();
                 finalupdate = true;
-            };
-            $('#result').html('Loser.');
-            $('#home').show();
-            started = false;
-
+                highlightSec([]);
+                $('#result').html('Loser.');
+                $('#home').show();
+                $('#forfeit').hide();
+                confirm = false;
+                started = false;
+            }; 
         } else if(data["status"] == 'inviter'){
             invitesent = true;
 

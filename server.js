@@ -395,24 +395,27 @@ function updateBoard(gid, s, p, sym) {
         l = check[p][k];
         if (game["board"][s][k] == sym && game["board"][s][l] == sym) {
             game["board"][s]["win"] = sym;
-            game["board"]["lastmove"]["win"] = "true";
-        } else {
-            game["board"]["lastmove"]["win"] = "";
         };
+    };
+    if (game["board"][s]["win"] != ""){
+        game["board"]["lastmove"]["win"] = "true";
+    } else {
+        game["board"]["lastmove"]["win"] = "";
     };
 
     if (game["board"][p]["win"] != "") {
         for (i = 1; i < 10; i++) {
             if (game["board"][i.toString()]["win"] == "") {
                 game["board"]["playableS"].push(i.toString());
-            }
-        }
+            };
+        };
     } else {
         game["board"]["playableS"].push(p);
-    }
+    };
 
     game["board"]["lastmove"]["symbol"] = sym;
     game["board"]["lastmove"]["move"] = s + p;
+    console.log(game["board"]["lastmove"]["symbol"], game["board"]["lastmove"]["win"])
 
     if (game["board"][s]["win"] == sym) {
         for (var k in check[s]) {
@@ -524,13 +527,12 @@ app.post('/invite/:invited', function (req, res) {
                 var playernames = [inviter, invited]
                 var gid = Math.random().toString();
                 var symbols = ["O", "X"];
-                newGame(gid);
+                games[gid] = JSON.parse(JSON.stringify(gameTemplate));
 
                 for (i = 0; i < 2; i++) {
                     people[players[i]]["game"]["id"] = gid;
                     people[players[i]]["game"]["symbol"] = symbols[i];
                     people[players[i]]["status"] = "gamefound";
-                    people[players[i]]["stats"]["played"] = (parseInt(people[players[i]]["stats"]["played"], 10) + 1).toString();
                     games[gid]["players"][symbols[i]] = playernames[i];
                 };
             } else {
