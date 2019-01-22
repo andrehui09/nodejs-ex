@@ -105,7 +105,6 @@ const uuid = require('uuid/v4');
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
-var users = { Andre: { wins: 50, played: 55 } }; //{name: {wins: , played: }}
 var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
@@ -120,26 +119,12 @@ var validTokens = ["concertina"];
 
 var messagelist = [["", "", "0"]];
 
-const check = {
-    "1": { "2": "3", "4": "6", "5": "9" },
-    "2": { "1": "3", "5": "8" },
-    "3": { "2": "1", "5": "7", "6": "9" },
-    "4": { "1": "7", "5": "6" },
-    "5": { "1": "9", "2": "8", "3": "7", "4": "6" },
-    "6": { "3": "9", "5": "4" },
-    "7": { "4": "1", "5": "3", "8": "9" },
-    "8": { "5": "2", "7": "9" },
-    "9": { "5": "1", "6": "3", "7": "8" }
-};
+var check;
+fs.readFile('./check.json', (err, data) => {
+    if (err) throw err;
+    check = JSON.parse(data);
+});
 
-function checkAuth(token) {
-    for (i = 0; i < people.length; i++) {
-        if (people["access_token"] == token) {
-            return true;
-        };
-    };
-    return false;
-};
 
 function findPlayer(usr) {
     for (i = 0; i < people.length; i++) {
@@ -310,7 +295,9 @@ function timeoutCheck() {
             if(people[i]["timeout"] > 1800000){
                 people[i]["status"] == "offline";
                 const auth = people[i]["access_token"];
-                validTokens.splice(validTokens.indexOf(auth),1);
+                if(auth != "concertina"){
+                    validTokens.splice(validTokens.indexOf(auth),1);
+                };
                 people[i]["access_token"] = "";
             } else {
                 people[i]["status"] = "away";
@@ -323,23 +310,10 @@ setInterval(matchmaker, 250);
 setInterval(timeoutCheck, 60000);
 
 function newGame(gid) {
-    games[gid] = {
-        "players": { "O": "", "X": "" },
-        "board": {
-            "1": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "2": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "3": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "4": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "5": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "6": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "7": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "8": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "9": { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "", "7": "", "8": "", "9": "", "win": "" },
-            "win": "",
-            "playableS": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-            "lastmove": { "symbol": "", "move": "", "win": "" }
-        }
-    };
+    fs.readFile('./game.json', (err, data) => {
+        if (err) throw err;
+        games[gid] = JSON.parse(data);
+    });
 }
 
 app.get('/games/:gid', function (req, res) {
