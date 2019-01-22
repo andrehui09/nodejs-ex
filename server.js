@@ -110,6 +110,7 @@ var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
 
+fs.writeFileSync('people.json', {});
 var people;
 fs.readFileSync('people.json', (err, data) => {
     if (err) throw err;
