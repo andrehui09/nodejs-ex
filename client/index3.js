@@ -178,9 +178,9 @@ function logon(){
                 access_token = data["access_token"];
 
                 $('#nameDisplay').html('<h2>' + username + '</h2>');
-                var stats = updateStats(username, 1);
                 closeNav('overlay');
                 refreshPlayers();
+                home();
 
                 if (!intervalSet) {
                     pollInterval = window.setInterval(status, 2000);
@@ -275,6 +275,7 @@ function startGame(){
     $.get(url + 'games/' + gameid, {"function":"load"}, function(data){
         var stats = updateStats(data[oppSym], 2);
 
+        $('#forfeit').show();
         $('#searching').hide();
         $('#ready').hide();
         setCanvas('/client/background.png');
@@ -406,6 +407,7 @@ function home(){
         $('#search').show();
         $('#result').html('');
         $('#invited').hide();
+        $('#forfeit').hide();
         updateStats(username, 1);
         setCanvas('/client/backgroundopac.png');
         $('#home').hide();
