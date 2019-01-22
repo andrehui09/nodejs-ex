@@ -164,12 +164,14 @@ app.get('/people', function (req, res) {
 });
 
 app.post('/people', function (req, res) {
+    var registered = false;
     for (i = 0; i < people.length; i++) {
         if (people[i]["username"] == req.body["username"]) {
             res.send({ "registered": "false" });
+            registered = true;
         };
     };
-    if (validTokens.includes(req.body["access_token"])) {
+    if (validTokens.includes(req.body["access_token"]) && !registered) {
         var newPerson = {
             "username": req.body["username"],
             "password": req.body["password"],
@@ -285,11 +287,9 @@ function matchmaker() {
 
     };
 
-    console.log(games);
     for (var key in games) {
         var p1 = games[key]["players"]["O"];
         var p2 = games[key]["players"]["X"];
-        console.log(p1, p2, findPlayer(p1), findPlayer(p2));
         if (people[findPlayer(p1)]["status"] == "ready" && people[findPlayer(p2)]["status"] == "ready") {
             people[findPlayer(p1)]["status"] = "turn";
             people[findPlayer(p2)]["status"] = "wait";
