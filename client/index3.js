@@ -140,6 +140,7 @@ function sendMsg() {
         $.post(url + 'chat', { "access_token":access_token, "username":username, "message":message }, function (data) {
             if(data["posted"] == "true"){
                 document.getElementById('msgbox').reset();
+                updateChat();
             };
         });
     };
@@ -286,7 +287,7 @@ function ready() {
 function startGame(){
     $.get(url + 'games/' + gameid, {"function":"load"}, function(data){
         updateStats(data[oppSym], 2);
-        highlightSec(["1","2","3","4","5","6","7","8","9"])
+        updateBoard();
 
         $('#forfeit').show();
         $('#searching').hide();
@@ -314,8 +315,9 @@ function updateBoard() {
     $.get(url + 'games/' + gameid, { "function":"update" }, function (data) {
         if(data[0]["symbol"] == "X" || data[0]["symbol"] == "O"){
             drawMove(data[0]["symbol"], data[0]["move"], data[0]["win"]);
-            highlightSec(data[1]);
+            
         };
+        highlightSec(data[1]);
     });
 };
 
