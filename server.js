@@ -350,10 +350,14 @@ app.get('/games/:gid', function (req, res) {
     const gid = req.params["gid"];
     const f = req.query["function"];
 
-    if (f == "load") {
-        res.send(games[gid]["players"]);
-    } else if (f == "update") {
-        res.send(games[gid]["board"]["lastmove"]);
+    if(games[gid]){
+        if (f == "load") {
+            res.send(games[gid]["players"]);
+        } else if (f == "update") {
+            res.send(games[gid]["board"]["lastmove"]);
+        };
+    } else {
+        res.sendStatus(404);
     };
 });
 
