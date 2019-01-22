@@ -310,9 +310,10 @@ setInterval(matchmaker, 250);
 setInterval(timeoutCheck, 60000);
 
 function newGame(gid) {
-    fs.readFile('./game.json', (err, data) => {
+    fs.readFileSync('./game.json', (err, data) => {
         if (err) throw err;
         games[gid] = JSON.parse(data);
+        console.log(JSON.parse(data));
     });
 }
 
