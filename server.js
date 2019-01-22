@@ -125,6 +125,12 @@ fs.readFile('./check.json', (err, data) => {
     check = JSON.parse(data);
 });
 
+fs.readFileSync('./game.json', (err, data) => {
+    if (err) throw err;
+    const gameTemplate = JSON.parse(data);
+    console.log(JSON.parse(data));
+});
+
 
 function findPlayer(usr) {
     for (i = 0; i < people.length; i++) {
@@ -265,7 +271,7 @@ function matchmaker() {
     if (Object.keys(searching).length >= 2) {
         var gid = Math.random().toString();
         var symbols = ["O", "X"];
-        newGame(gid);
+        games[gid] = gameTemplate;
 
         for (i = 0; i < 2; i++) {
             people[Object.values(searching)[i]]["game"]["id"] = gid;
