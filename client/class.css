@@ -159,3 +159,7 @@ small {
     display: inline-block;
     vertical-align: middle;
 }
+
+.nav-link{
+    cursor: pointer;
+}
