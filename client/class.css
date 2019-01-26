@@ -163,3 +163,15 @@ small {
 .nav-link{
     cursor: pointer;
 }
+
+.pos-f-t{
+    position: fixed;
+}
+
+.bg-dark{
+    background-color: lightgrey;
+}
+
+.navbar-dark{
+    background-color: lightgrey;
+}
