@@ -523,7 +523,7 @@ function logout(){
 function play(){
     $('#about').hide();
     $('#play').show();
-    $("#navbar").attr("aria-expanded","false");
+    document.getElementById("navbar").setAttribute("aria-expanded","false");
 };
 
 function about(){
