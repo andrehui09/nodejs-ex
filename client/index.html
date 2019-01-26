@@ -12,12 +12,15 @@
     <body>
         
 
-        <div class="pos-f-t">
+        <div id="navbar" class="pos-f-t">
             <div class="collapse" id="navbarToggleExternalContent">
-              <div class="bg-dark p-4">
+              <div class="p-4" style="background-color: grey;">
                 <ul class="navbar-nav text-white">
                     <li class="nav-item active">
                         <a class="nav-link" onclick="play()">Play <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="instructions()">How to Play</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="about()">About</a>
@@ -33,55 +36,53 @@
                 </ul>
               </div>
             </div>
-            <nav class="navbar navbar-dark bg-dark">
-              <button id="navbar" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <h3 class="text-white">Ultimate Tic Tac Toe</h3>
+            <nav class="navbar navbar-dark" style="background-color: grey;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h3 class="text-white">Ultimate Tic Tac Toe</h3>
             </nav>
-          </div>
+        </div>
+
+        <div id='overlay' class='overlay row'>
+
+            <form id='logon' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
+                <div class='form-group'>
+                    <label><h5>Username:</h5></label> 
+                    <input id='username' type="text" class='form-control' placeholder='Enter username'>
+                    <label><h5>Password:</h5></label> 
+                    <input id='password' type="password" class='form-control' placeholder='Enter password'>
+                </div>
+                <div id='logonNote' style='margin: 5%'></div>
+                <button class='btn btn-default btn-md' type='submit'>Submit</button>
+            </form>
+
+            <a id='showRForm' class='btn btn-default btn-sm overlay-content' onclick='openR()'>Not registered? Join here!</a>
+        </div>
+
+        <div id='overlayR' class='overlayR row'>
+
+            <form id='register' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
+                <div class='form-group'>
+                    <label><h5>Forename:</h5></label> 
+                    <input id='forenameR' type="text" class='form-control' placeholder='Enter forename'>
+                    <label><h5>Surname:</h5></label> 
+                    <input id='surnameR' type="text" class='form-control' placeholder='Enter surname'>
+                    <label><h5>Username:</h5></label> 
+                    <input id='usernameR' type="text" class='form-control' placeholder='Enter username'>
+                    <label><h5>Password:</h5></label> 
+                    <input id='passwordR' type="password" class='form-control' placeholder='Enter password'>
+                </div>
+                <div id='registrationNote' style='margin: 5%'></div>
+                <button class='btn btn-default btn-md' type='submit'>Submit</button>
+                <button class='btn btn-default btn-md' onclick='cancelR()'>Cancel</button>
+            </form>
+
+        </div>
 
 
 
-        <div class='container top' id="play">
-
-
-            <div id='overlay' class='overlay row'>
-
-                <form id='logon' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
-                    <div class='form-group'>
-                        <label><h5>Username:</h5></label> 
-                        <input id='username' type="text" class='form-control' placeholder='Enter username'>
-                        <label><h5>Password:</h5></label> 
-                        <input id='password' type="password" class='form-control' placeholder='Enter password'>
-                    </div>
-                    <div id='logonNote' style='margin: 5%'></div>
-                    <button class='btn btn-default btn-md' type='submit'>Submit</button>
-                </form>
-
-                <a id='showRForm' class='btn btn-default btn-sm overlay-content' onclick='openR()'>Not registered? Join here!</a>
-            </div>
-
-            <div id='overlayR' class='overlayR row'>
-
-                <form id='register' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
-                    <div class='form-group'>
-                        <label><h5>Forename:</h5></label> 
-                        <input id='forenameR' type="text" class='form-control' placeholder='Enter forename'>
-                        <label><h5>Surname:</h5></label> 
-                        <input id='surnameR' type="text" class='form-control' placeholder='Enter surname'>
-                        <label><h5>Username:</h5></label> 
-                        <input id='usernameR' type="text" class='form-control' placeholder='Enter username'>
-                        <label><h5>Password:</h5></label> 
-                        <input id='passwordR' type="password" class='form-control' placeholder='Enter password'>
-                    </div>
-                    <div id='registrationNote' style='margin: 5%'></div>
-                    <button class='btn btn-default btn-md' type='submit'>Submit</button>
-                    <button class='btn btn-default btn-md' onclick='cancelR()'>Cancel</button>
-                </form>
-
-            </div>
-
+        <div class='container' id="play">
 
             <div id='offline' class='overlayOffline row'>
                 <div class='overlay-content text-center'>
@@ -120,7 +121,7 @@
             </div>
    
 
-            <div class='row align-items-center' style='margin-top: 10%'>
+            <div class='row align-items-center'>
 
 
                 <div class='col'>
@@ -151,18 +152,20 @@
 
             <div class='row'>
                 <div class='col-12'>
+                    <canvas id='background'></canvas>
                     <canvas id='canvas'></canvas>
+                    <canvas id='light'></canvas>
                 </div>
-                <div id='forfeit' class='text-center col-12'>
+                <div style='margin: auto' id='forfeit' class='text-center col-12'>
                     <input type="button" id='forfeitButton' value='Forfeit' class='btn btn-default' onclick='forfeit()'/>
                     <div id="forfeitConfirm">Are you sure?
-                        <input type="button" value='Yes' class='btn btn-default' onclick='forfeit()'/>
-                        <input type="button"' value='No' class='btn btn-default' onclick='cancelForfeit()'/>
+                        <input type="button" value='Yes' class='btn btn-default' style='margin-bottom: 10px' onclick='forfeit()'/>
+                        <input type="button" value='No' class='btn btn-default' style='margin-bottom: 10px' onclick='cancelForfeit()'/>
                     </div>
                 </div>
-                <div style='margin: 15px' class='text-center col-12'>
+                <div style='margin: auto' class='text-center col-12'>
                     <h3 class='text-center' id='result'></h3>
-                    <button id='home' class='btn btn-default btn-md' onclick='home()'>Return to Menu</button>
+                    <button id='home' class='btn btn-default btn-md' style='margin-bottom: 10px' onclick='home()'>Return to Menu</button>
                 </div>
             </div>
 
@@ -192,13 +195,20 @@
             </div>
         </div>
 
-        <div id="about" class="container">
-            <p>About</p>
+        <div id="instructions" class="container">
+            <h2>How to Play</h2>
+            <p>You are only allowed to make a move in the lit-up boxes.</p>
+            <p>Lit up boxes are determined by where the last move occured.</p>
+            <p>For example, if a move was made in the top left box of a smaller grid, the next move can only be made in the top left box of the big grid, etc.</p>
+            <p>If a move sends you to a completed box, you are free to choose any box of the larger grid to play in.</p>
+            <p>Win by winning 3 boxes in a line.</p>
         </div>
 
-        <button onclick='away()'>away</button>
-        <button onclick='stop()'>stop</button>
-        <button onclick='start()'>start</button>
+        <div id="about" class="container">
+            <h2>About</h2>
+            <p>This is a coursework project for the Web Programming module at Durham University in 2019-2020.</p>
+            <p>Produced by Andre Hui</p>
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

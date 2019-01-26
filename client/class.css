@@ -1,5 +1,7 @@
-#canvas{
-    width: 100%;
+
+
+#light{
+    position: absolute;
 }
 
 .btn{
@@ -11,7 +13,8 @@
     background-color: lightgrey;
     padding: 3%;
     border-radius: 2%;
-    margin: 2%;
+    margin: auto;
+    margin-bottom: 3%;
 }
 
 .overlay{
@@ -164,14 +167,61 @@ small {
     cursor: pointer;
 }
 
-.pos-f-t{
-    position: fixed;
+
+#play{
+    display: none;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 0%;
+    padding: 10%;
+    padding-top: 5%;
+    text-align: left;
 }
 
-.bg-dark{
-    background-color: lightgrey;
+body{
+    text-align: center;
+    margin: auto;
 }
 
-.navbar-dark{
-    background-color: lightgrey;
+
+#about{
+    display: none;
+    margin-top: 10%;
+    margin-bottom: 20%;
+}
+
+#instructions{
+    display: none;
+    margin-top: 10%;
+    margin-bottom: 20%;
+}
+
+#navbar{
+    display: none;
+    text-align: left;
+}
+
+#background{
+    width: 100%;
+    z-index: 0;
+    top: 0;
+    left: 0;
+}
+
+#canvas{
+    width: 100%;
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#light{
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
 }

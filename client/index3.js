@@ -56,15 +56,15 @@ const secPos = {
 };
 
 const secHighlight = {
-    "1": {"x": "8", "y": "169"},
-    "2": {"x": "196", "y": "169"},
-    "3": {"x": "384", "y": "169"},
-    "4": {"x": "8", "y": "357"},
-    "5": {"x": "196", "y": "357"},
-    "6": {"x": "384", "y": "357"},
-    "7": {"x": "8", "y": "545"},
-    "8": {"x": "196", "y": "545"},
-    "9": {"x": "384", "y": "545"}
+    "1": {"x": "0", "y": "0"},
+    "2": {"x": "185", "y": "0"},
+    "3": {"x": "369", "y": "0"},
+    "4": {"x": "0", "y": "185"},
+    "5": {"x": "185", "y": "185"},
+    "6": {"x": "369", "y": "185"},
+    "7": {"x": "0", "y": "369"},
+    "8": {"x": "185", "y": "369"},
+    "9": {"x": "369", "y": "369"}
 }
 
 window.onload = function(){
@@ -75,6 +75,14 @@ window.onload = function(){
     $('#ready').hide();
     $('#home').hide();
     $('#invited').hide();
+
+    c3 = document.getElementById('background');
+    c3.width = 552;
+    c3.height = 600;
+
+    c2 = document.getElementById('light');
+    c2.width = 552;
+    c2.height = 552;
 };
 
 window.onbeforeunload = function(){
@@ -104,8 +112,8 @@ function setCanvas(imgsrc){
     img.src = imgsrc;
     img.onload = function(){
         ctx.drawImage(img, 0, 0);
-    };
-}
+    };  
+};
 
 
 function openNav(eid){
@@ -194,6 +202,8 @@ function logon(){
                 closeNav('overlay');
                 refreshPlayers();
                 home();
+                $('#navbar').css("display", "inline");
+                $('#play').css("display", "inline-block");
 
                 if (!intervalSet) {
                     pollInterval = window.setInterval(status, 2000);
@@ -281,6 +291,8 @@ function ready() {
             oppSym = 'O';
         };
         $('#ready').hide();
+        window.clearInterval(pollInterval)
+        pollInterval = window.setInterval(status, 600);
     });
 };
 
@@ -381,16 +393,13 @@ function drawMove(sym, pos, win){
 };
 
 function highlightSec(secs){
-    c = document.getElementById('canvas');
-    ctx = c.getContext('2d');
+    c2 = document.getElementById('light');
+    ctx2 = c2.getContext('2d');
+    ctx2.clearRect(0,0,552,552);
     for(i = 1; i < 10; i++){
-        ctx.fillStyle = "#ffffff"
-        ctx.fillRect(secHighlight[i.toString()]["x"], secHighlight[i.toString()]["y"], 160, 6);
-    };
-    for(i = 0; i < secs.length; i++){
-        if(!finalupdate){
-            ctx.fillStyle = "#00ff00"
-            ctx.fillRect(secHighlight[secs[i]]["x"], secHighlight[secs[i]]["y"], 160, 6);
+        ctx2.fillStyle = "rgba(0,0,0,0.5)"
+        if(!secs.includes(i.toString()) && !finalupdate){
+            ctx2.fillRect(secHighlight[i.toString()]["x"], secHighlight[i.toString()]["y"], 184, 184)
         };
     };
 };
@@ -521,16 +530,25 @@ function logout(){
 };
 
 function play(){
-    $('#about').hide();
-    $('#play').show();
+    $('#about').css("display", "none");
+    $('#instructions').css("display", "none");
+    $('#play').css("display", "inline-block");
     document.getElementById("navbar").setAttribute("aria-expanded","false");
 };
 
 function about(){
-    $('#play').hide();
-    $('#about').show();
-    $("#navbar").attr("aria-expanded","false");
+    $('#about').css("display", "inline-block");
+    $('#instructions').css("display", "none");
+    $('#play').css("display", "none");
+    document.getElementById("navbar").setAttribute("aria-expanded","false");
 }
+
+function instructions(){
+    $('#about').css("display", "none");
+    $('#instructions').css("display", "inline-block");
+    $('#play').css("display", "none");
+    document.getElementById("navbar").setAttribute("aria-expanded","false");
+};
 
 
 
@@ -570,8 +588,6 @@ function status() {
             if(!started){
                 startGame();
                 started = true;
-                window.clearInterval(pollInterval)
-                pollInterval = window.setInterval(status, 600);
             };
             yourTurn = true;
             if (!updated) {
@@ -583,8 +599,6 @@ function status() {
             if(!started){
                 startGame();
                 started = true;
-                window.clearInterval(pollInterval)
-                pollInterval = window.setInterval(status, 600);
             };
             yourTurn = false;
             updated = false;
