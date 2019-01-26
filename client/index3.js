@@ -523,11 +523,13 @@ function logout(){
 function play(){
     $('#about').hide();
     $('#play').show();
+    $("#navbar").attr("aria-expanded","false");
 };
 
 function about(){
     $('#play').hide();
     $('#about').show();
+    $("#navbar").attr("aria-expanded","false");
 }
 
 
