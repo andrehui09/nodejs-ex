@@ -194,6 +194,7 @@ app.get('/people/:username', function (req, res) {
             found = true;
         };
     };
+    
 
     if (!found) {
         res.sendStatus(404);
