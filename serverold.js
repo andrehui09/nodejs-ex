@@ -109,15 +109,55 @@ var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
 
-var people = JSON.parse(fs.readFileSync('./people.json', 'utf8'));
+var people = [{
+    "username":"doctorwhocomposer",
+    "password":"",
+    "forename":"Delia",
+    "surname":"Derbyshire",
+    "access_token":"concertina",
+    "stats":{"wins":"","played":""},
+    "status":"offline",
+    "game":{"id":"","symbol":""},
+    "timeout":0
+},
+{
+    "username":"asdf",
+    "password":"asdf",
+    "forename":"asdf",
+    "surname":"asdf",
+    "access_token":"",
+    "stats":{"wins":0,"played":0},
+    "status":"offline",
+    "game":{"id":"","symbol":""},
+    "timeout":0,
+},
+{
+    "username":"zxcv",
+    "password":"zxcv",
+    "forename":"zxcv",
+    "surname":"zxcv",
+    "access_token":"",
+    "stats":{"wins":0,"played":0},
+    "status":"offline",
+    "game":{"id":"","symbol":""},
+    "timeout":1800001
+}];
 
 var validTokens = ["concertina"];
 
 var messagelist = [["", "", "0"]];
 
-var check = JSON.parse(fs.readFileSync('./check.json', 'utf8'));
+var check;
+fs.readFile('./check.json', (err, data) => {
+    if (err) throw err;
+    check = JSON.parse(data);
+});
 
-var gameTemplate = JSON.parse(fs.readFileSync('./game.json', 'utf8'));;
+var gameTemplate;
+fs.readFile('./game.json', (err, data) => {
+    if (err) throw err;
+    gameTemplate = JSON.parse(data);
+});
 
 
 function findPlayer(usr) {
@@ -226,25 +266,25 @@ app.get('/people/:username', function (req, res) {
 });
 
 app.post('/people/:username', function (req, res) {
-    const username = req.params.username;
+    const username = req.params["username"];
     var userindex;
 
     for (i = 0; i < people.length; i++) {
         p = people[i];
-        if (p.username == username) {
+        if (p["username"] == username) {
             userindex = i;
         };
     };
 
-    if (validTokens.includes(req.body.access_token)) {
-        people[userindex].timeout = 0;
-        people[userindex].status = req.body.status;
-        if (req.body.status == "standby" && games[people[userindex].game.id] != "") {
-            delete games[people[userindex].game.id];
-            people[userindex].game = { "id": "", "symbol": "" };
-        } else if (req.body.status == "offline") {
+    if (validTokens.includes(req.body["access_token"])) {
+        people[userindex]["timeout"] = 0;
+        people[userindex]["status"] = req.body["status"];
+        if (req.body["status"] == "standby" && games[people[userindex]["game"]["id"]] != "") {
+            delete games[people[userindex]["game"]["id"]];
+            people[userindex]["game"] = { "id": "", "symbol": "" };
+        } else if (req.body["status"] == "offline") {
             validTokens.splice(validTokens.indexOf(people[userindex]["access_token"]), 1);
-            people[userindex].access_token = "";
+            people[userindex]["access_token"] = "";
         };
         res.send({ "status": "updated" });
 
@@ -256,9 +296,9 @@ app.post('/people/:username', function (req, res) {
 function matchmaker() {
     for (i = 0; i < people.length; i++) {
         var p = people[i];
-        if (p.status == "searching" && !Object.keys(searching).includes(p["username"])) {
+        if (p["status"] == "searching" && !Object.keys(searching).includes(p["username"])) {
             searching[p["username"]] = i;
-        } else if (p.status != "searching" && Object.keys(searching).includes(p["username"])) {
+        } else if (p["status"] != "searching" && Object.keys(searching).includes(p["username"])) {
             delete searching[p["username"]];
         };
     };
@@ -268,10 +308,10 @@ function matchmaker() {
         games[gid] = JSON.parse(JSON.stringify(gameTemplate));
 
         for (i = 0; i < 2; i++) {
-            people[Object.values(searching)[i]].game.id = gid;
-            people[Object.values(searching)[i]].game.symbol = symbols[i];
-            people[Object.values(searching)[i]].status = "gamefound";
-            games[gid].players[symbols[i]] = Object.keys(searching)[i];
+            people[Object.values(searching)[i]]["game"]["id"] = gid;
+            people[Object.values(searching)[i]]["game"]["symbol"] = symbols[i];
+            people[Object.values(searching)[i]]["status"] = "gamefound";
+            games[gid]["players"][symbols[i]] = Object.keys(searching)[i];
         };
         delete searching[Object.keys(searching)[0]];
         delete searching[Object.keys(searching)[0]];
@@ -279,28 +319,28 @@ function matchmaker() {
     };
 
     for (var key in games) {
-        var p1 = games[key].players.O;
-        var p2 = games[key].players.X;
-        if (people[findPlayer(p1)].status == "ready" && people[findPlayer(p2)].status == "ready") {
-            people[findPlayer(p1)].status = "turn";
-            people[findPlayer(p2)].status = "wait";
+        var p1 = games[key]["players"]["O"];
+        var p2 = games[key]["players"]["X"];
+        if (people[findPlayer(p1)]["status"] == "ready" && people[findPlayer(p2)]["status"] == "ready") {
+            people[findPlayer(p1)]["status"] = "turn";
+            people[findPlayer(p2)]["status"] = "wait";
         };
     };
 };
 
 function timeoutCheck() {
     for(i = 0; i < people.length; i++){
-        people[i].timeout += 60000;
-        if(people[i].status != "offline" && people[i].timeout > 300000){
-            if(people[i].timeout > 1800000){
-                people[i].status == "offline";
-                const auth = people[i].access_token;
+        people[i]["timeout"] += 60000;
+        if(people[i]["status"] != "offline" && people[i]["timeout"] > 300000){
+            if(people[i]["timeout"] > 1800000){
+                people[i]["status"] == "offline";
+                const auth = people[i]["access_token"];
                 if(auth != "concertina"){
                     validTokens.splice(validTokens.indexOf(auth),1);
                 };
-                people[i].access_token = "";
+                people[i]["access_token"] = "";
             } else {
-                people[i].status = "away";
+                people[i]["status"] = "away";
             };
         };
     };
@@ -311,14 +351,14 @@ setInterval(timeoutCheck, 60000);
 
 
 app.get('/games/:gid', function (req, res) {
-    const gid = req.params.gid;
-    const f = req.query.function;
+    const gid = req.params["gid"];
+    const f = req.query["function"];
 
     if(games[gid]){
         if (f == "load") {
-            res.send(games[gid].players);
+            res.send(games[gid]["players"]);
         } else if (f == "update") {
-            res.send([games[gid].board.lastmove, games[gid].board.playableS]);
+            res.send([games[gid]["board"]["lastmove"], games[gid]["board"]["playableS"]]);
         };
     } else {
         res.sendStatus(404);
@@ -326,27 +366,27 @@ app.get('/games/:gid', function (req, res) {
 });
 
 app.post('/games/:gid', function (req, res) {
-    const game = games[req.params.gid];
+    const game = games[req.params["gid"]];
 
-    const symbol = req.body.symbol;
-    const s = req.body.s;
-    const p = req.body.p;
+    const symbol = req.body["symbol"]
+    const s = req.body["s"];
+    const p = req.body["p"];
 
-    if (validTokens.includes(req.body.access_token)) {
-        if (req.body.function == "forfeit") {
+    if (validTokens.includes(req.body["access_token"])) {
+        if (req.body["function"] == "forfeit") {
 
-            var loser = findPlayer(game.players[symbol]);
+            var loser = findPlayer(game["players"][symbol]);
             var winner;
             if (symbol == "O"){
-                winner = findPlayer(game.players.X);
+                winner = findPlayer(game["players"]["X"]);
             } else {
-                winner = findPlayer(game.players.O);
+                winner = findPlayer(game["players"]["O"]);
             };
-            people[loser].status = "loss";
-            people[loser].stats.played++;
-            people[winner].status = "win";
-            people[winner].stats.played++;
-            people[winner].stats.wins++;
+            people[loser]["status"] = "loss";
+            people[loser]["stats"]["played"]++;
+            people[winner]["status"] = "win";
+            people[winner]["stats"]["played"]++;
+            people[winner]["stats"]["wins"]++;
 
             res.send({});
 
@@ -356,15 +396,15 @@ app.post('/games/:gid', function (req, res) {
 
                 updateBoard(req.params["gid"], s, p, symbol);
 
-                if (game.board.win == "") {
-                    var p1 = findPlayer(game.players.O);
-                    var p2 = findPlayer(game.players.X);
+                if (game["board"]["win"] == "") {
+                    var p1 = findPlayer(game["players"]["O"]);
+                    var p2 = findPlayer(game["players"]["X"]);
                     if (symbol == "O") {
-                        people[p1].status = 'wait';
-                        people[p2].status = 'turn';
+                        people[p1]["status"] = 'wait';
+                        people[p2]["status"] = 'turn';
                     } else if (symbol == "X") {
-                        people[p2].status = 'wait';
-                        people[p1].status = 'turn';
+                        people[p2]["status"] = 'wait';
+                        people[p1]["status"] = 'turn';
                     };
                 };
             } else {
@@ -379,60 +419,60 @@ app.post('/games/:gid', function (req, res) {
 
 function updateBoard(gid, s, p, sym) {
     const game = games[gid];
-    game.board.playableS = [];
-    game.board[s][p] = sym;
+    game["board"]["playableS"] = [];
+    game["board"][s][p] = sym;
 
     for (k in check[p]) {
         l = check[p][k];
-        if (game.board[s][k] == sym && game.board[s][l] == sym) {
-            game.board[s].win = sym;
+        if (game["board"][s][k] == sym && game["board"][s][l] == sym) {
+            game["board"][s]["win"] = sym;
         };
     };
-    if (game.board[s].win != ""){
-        game.board.lastmove.win = "true";
+    if (game["board"][s]["win"] != ""){
+        game["board"]["lastmove"]["win"] = "true";
     } else {
-        game.board.lastmove.win = "";
+        game["board"]["lastmove"]["win"] = "";
     };
 
-    if (game.board[p].win != "") {
+    if (game["board"][p]["win"] != "") {
         for (i = 1; i < 10; i++) {
-            if (game.board[i.toString()].win == "") {
-                game.board.playableS.push(i.toString());
+            if (game["board"][i.toString()]["win"] == "") {
+                game["board"]["playableS"].push(i.toString());
             };
         };
     } else {
-        game.board.playableS.push(p);
+        game["board"]["playableS"].push(p);
     };
 
-    game.board.lastmove.symbol = sym;
-    game.board.lastmove.move = s + p;
+    game["board"]["lastmove"]["symbol"] = sym;
+    game["board"]["lastmove"]["move"] = s + p;
 
-    if (game.board[s].win == sym) {
-        for (k in check[s]) {
+    if (game["board"][s]["win"] == sym) {
+        for (var k in check[s]) {
             l = check[s][k];
-            if (game.board[k].win == sym && game.board[l].win == sym) {
-                game.board.win = sym;
+            if (game["board"][k]["win"] == sym && game["board"][l]["win"]) {
+                game["board"]["win"] = sym;
             };
         };
     };
 
-    var p1 = findPlayer(game.players.O);
-    var p2 = findPlayer(game.players.X);
+    var p1 = findPlayer(game["players"]["O"]);
+    var p2 = findPlayer(game["players"]["X"]);
     var winner;
     var loser;
-    if (game.board.win != ""){
-        if (game.board.win == "O") {
+    if (game["board"]["win"] != ""){
+        if (game["board"]["win"] == "O") {
             winner = p1;
             loser = p2;
-        } else if (game.board.win == "X") {
+        } else if (game["board"]["win"] == "X") {
             winner = p2;
             loser = p1;
         };
-        people[winner].stats.wins++;
-        people[winner].stats.played++;
-        people[winner].status = "win";
-        people[loser].stats.played++;
-        people[loser].status = "loss";
+        people[winner]["stats"]["wins"]++;
+        people[winner]["stats"]["played"]++;
+        people[winner]["status"] = "win";
+        people[loser]["stats"]["played"]++;
+        people[loser]["status"] = "loss";
     };
 };
 
@@ -456,7 +496,7 @@ app.post('/chat', function (req, res) {
     }
 
     if (validTokens.includes(req.body["access_token"])) {
-        messagelist.push([req.body.username, req.body.message, col]);
+        messagelist.push([req.body["username"], req.body["message"], col]);
         if (messagelist.length > 30) {
             messagelist.shift();
         }
@@ -467,10 +507,10 @@ app.post('/chat', function (req, res) {
 });
 
 app.post('/invite', function (req, res) {
-    if (req.body.cancel == "true") {
+    if (req.body["cancel"] == "true") {
         for (var key in invites) {
-            if (invites[key].includes(req.body.inviter)) {
-                invites[key].splice(invites[key].indexOf(req.body.inviter), 1);
+            if (invites[key].includes(req.body["inviter"])) {
+                invites[key].splice(invites[key].indexOf(req.body["inviter"]), 1);
             };
         };
     };
@@ -478,7 +518,7 @@ app.post('/invite', function (req, res) {
 });
 
 app.get('/invite/:invited', function (req, res) {
-    const invited = req.params.invited;
+    const invited = req.params["invited"];
     if (!invites[invited]) {
         invites[invited] = [];
     };
@@ -486,11 +526,11 @@ app.get('/invite/:invited', function (req, res) {
 });
 
 app.post('/invite/:invited', function (req, res) {
-    const invited = req.params.invited;
+    const invited = req.params["invited"];
 
-    if (validTokens.includes(req.body.access_token)) {
-        if (req.body.function == "invite") {
-            const inviter = req.body.inviter;
+    if (validTokens.includes(req.body["access_token"])) {
+        if (req.body["function"] == "invite") {
+            const inviter = req.body["inviter"];
             var success = "true";
 
             for (var key in invites) {
@@ -506,12 +546,12 @@ app.post('/invite/:invited', function (req, res) {
                 };
             };
 
-            people[findPlayer(inviter)].status = "inviter";
+            people[findPlayer(inviter)]["status"] = "inviter";
 
             res.send({ "invited": success });
 
         } else {
-            if (req.body.function == "accept") {
+            if (req.body["function"] == "accept") {
                 var inviter = invites[invited][0];
                 var players = [findPlayer(inviter), findPlayer(invited)];
                 var playernames = [inviter, invited]
@@ -520,13 +560,13 @@ app.post('/invite/:invited', function (req, res) {
                 games[gid] = JSON.parse(JSON.stringify(gameTemplate));
 
                 for (i = 0; i < 2; i++) {
-                    people[players[i]].game.id = gid;
-                    people[players[i]].game.symbol = symbols[i];
-                    people[players[i]].status = "gamefound";
-                    games[gid].players[symbols[i]] = playernames[i];
+                    people[players[i]]["game"]["id"] = gid;
+                    people[players[i]]["game"]["symbol"] = symbols[i];
+                    people[players[i]]["status"] = "gamefound";
+                    games[gid]["players"][symbols[i]] = playernames[i];
                 };
             } else {
-                people[findPlayer(invites[invited][0])].status = "standby";
+                people[findPlayer(invites[invited][0])]["status"] = "standby";
             };
             invites[invited] = [];
             res.send({});
@@ -537,7 +577,7 @@ app.post('/invite/:invited', function (req, res) {
 });
 
 app.get('/invite/:invited', function (req, res) {
-    const invited = req.params.invited;
+    const invited = req.params["invited"];
     res.send(invites[invited]);
 });
 

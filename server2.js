@@ -109,15 +109,17 @@ var searching = {}; // {name: index} searching.keys().length
 var games = {};
 var invites = {};
 
-var people = JSON.parse(fs.readFileSync('./people.json', 'utf8'));
+var people = require('./people.json');
 
 var validTokens = ["concertina"];
 
 var messagelist = [["", "", "0"]];
 
-var check = JSON.parse(fs.readFileSync('./check.json', 'utf8'));
+var check = require('./check.json');
 
-var gameTemplate = JSON.parse(fs.readFileSync('./game.json', 'utf8'));;
+var gameTemplate = require('./game.json');
+
+console.log(people, check, gameTemplate)
 
 
 function findPlayer(usr) {

@@ -235,18 +235,16 @@ function register(){
     const forename = $("#forenameR").val();
     const surname = $("#surnameR").val();
     if(usernameR && password && forename && surname){
-        $.get(url + 'accesstoken', {}, function(data){
-            access_token = data["access_token"];
-            $.post(url + 'people', {"username":usernameR, "password":password, "forename":forename, "surname":surname, "access_token":access_token}, function(dat){
-                if(dat && dat["registered"] == "false"){
-                    $('#registrationNote').html('<div>Username Taken.</div>');
-                } else {
-                    $('#logonNote').html('Registration successful! You can now log in.');
-                    showLForm();
-                };
-            }).fail(function(){$('#registrationNote').html('<div>Registration failed, please try again in a bit.</div>');});
+        $.post(url + 'people', {"username":usernameR, "password":password, "forename":forename, "surname":surname, "access_token":"concertina"}, function(dat){
+            $('#logonNote').html('Registration successful! You can now log in.');
+            showLForm();
+        }).fail(function(jqXHR){
+            if(jqXHR.status == 400){
+                $('#registrationNote').html('<div>Username Taken.</div>');
+            } else {
+                $('#registrationNote').html('<div>Registration failed, please try again in a bit.</div>');
+            };
         });
-        
     } else {
         $('#registrationNote').html('<div>Make sure all fields are filled.</div>');
     };
