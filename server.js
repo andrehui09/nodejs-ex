@@ -194,7 +194,7 @@ app.get('/people/:username', function (req, res) {
             found = true;
         };
     };
-    
+
 
     if (!found) {
         res.sendStatus(404);
@@ -296,7 +296,7 @@ function timeoutCheck() {
             if(people[i].timeout > 1800000){
                 people[i].status == "offline";
                 const auth = people[i].access_token;
-                if(auth != "concertina"){
+                if(auth != "concertina" && auth != ""){
                     validTokens.splice(validTokens.indexOf(auth),1);
                 };
                 people[i].access_token = "";
