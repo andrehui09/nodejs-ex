@@ -87,7 +87,7 @@ window.onload = function(){
 
 window.onbeforeunload = function(){
     $.post(url + 'people/' + username, {"access_token":access_token, "status":"offline"}, function(){
-        
+
     });
 };
 $(window).on('resize', setRatio);
@@ -112,7 +112,7 @@ function setCanvas(imgsrc){
     img.src = imgsrc;
     img.onload = function(){
         ctx.drawImage(img, 0, 0);
-    };  
+    };
 };
 
 
@@ -171,7 +171,9 @@ function loadPlayer(usr){
         $('#pname').html(usr);
         $('#pwins').html('Wins: ' + data["wins"]);
         $('#pplayed').html('Played: ' + data["played"]);
-        $('#invite').html('<button class="btn btn-default btn-md" onclick="invite(\'' + usr + '\')">Invite</button>');
+        if(standby){
+          $('#invite').html('<button class="btn btn-default btn-md" onclick="invite(\'' + usr + '\')">Invite</button>');
+        };
         displayPlayer();
     });
 };
@@ -272,7 +274,15 @@ function startSearch() {
             return;
         }
     });
-}
+};
+
+function cancelSearch() {
+    $.post(url + '/people' + username, {"status":"standby", "access_token":access_token}, function (data) {
+        if (data) {
+            home();
+        };
+    });
+};
 
 function getGame(){
     $.get(url + 'people/' + username, {"function":"gameinfo"}, function(data){
@@ -325,7 +335,7 @@ function updateBoard() {
     $.get(url + 'games/' + gameid, { "function":"update" }, function (data) {
         if(data[0]["symbol"] == "X" || data[0]["symbol"] == "O"){
             drawMove(data[0]["symbol"], data[0]["move"], data[0]["win"]);
-            
+
         };
         highlightSec(data[1]);
     });
@@ -567,7 +577,7 @@ function status() {
             closeNav('away');
 
         } else if (data["status"] == 'searching') {
-            
+
 
         } else if (data["status"] == 'gamefound') {
             $('#search').hide();
@@ -621,7 +631,7 @@ function status() {
                 $('#forfeit').hide();
                 confirm = false;
                 started = false;
-            }; 
+            };
         } else if(data["status"] == 'inviter'){
             invitesent = true;
 
