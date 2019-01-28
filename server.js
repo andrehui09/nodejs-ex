@@ -294,6 +294,7 @@ function timeoutCheck() {
         people[i].timeout += 60000;
         if(people[i].status != "offline" && people[i].timeout > 300000){
             if(people[i].timeout > 1800000){
+                console.log(people[i]);
                 people[i].status == "offline";
                 const auth = people[i].access_token;
                 if(auth != "concertina" && auth != ""){
