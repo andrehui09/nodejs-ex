@@ -246,6 +246,8 @@ app.post('/people/:username', function (req, res) {
         } else if (req.body.status == "offline") {
             validTokens.splice(validTokens.indexOf(people[userindex]["access_token"]), 1);
             people[userindex].access_token = "";
+        } else if (req.body.status == "searching" || req.body.status == "ready") {
+            matchmaker();
         };
         res.send({ "status": "updated" });
 
@@ -308,7 +310,7 @@ function timeoutCheck() {
     };
 };
 
-setInterval(matchmaker, 250);
+
 setInterval(timeoutCheck, 60000);
 
 
