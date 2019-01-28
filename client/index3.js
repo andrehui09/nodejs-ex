@@ -277,7 +277,7 @@ function startSearch() {
 };
 
 function cancelSearch() {
-    $.post(url + '/people' + username, {"status":"standby", "access_token":access_token}, function (data) {
+    $.post(url + 'people/' + username, {"status":"standby", "access_token":access_token}, function (data) {
         if (data) {
             home();
         };
@@ -436,6 +436,7 @@ function home(){
     $.post(url + 'people/' + username, {"status":"standby", "access_token":access_token}, function(){
         $('#player2').html('');
         $('#search').show();
+        $('#searching').hide();
         $('#result').html('');
         $('#invited').hide();
         $('#forfeit').hide();
