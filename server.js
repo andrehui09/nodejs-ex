@@ -531,7 +531,7 @@ app.post('/invite/:invited', function (req, res) {
                 people[findPlayer(invites[invited][0])].status = "standby";
             };
 
-            invites.splice(0,1);
+            invites[invited].splice(0,1);
             res.send({});
         };
     } else {
