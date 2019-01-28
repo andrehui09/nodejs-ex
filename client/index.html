@@ -10,7 +10,7 @@
         <link rel='stylesheet' type='text/css' href='/client/class.css'>
     </head>
     <body>
-        
+
 
         <div id="navbar" class="pos-f-t">
             <div class="collapse" id="navbarToggleExternalContent">
@@ -48,9 +48,9 @@
 
             <form id='logon' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
                 <div class='form-group'>
-                    <label><h5>Username:</h5></label> 
+                    <label><h5>Username:</h5></label>
                     <input id='username' type="text" class='form-control' placeholder='Enter username'>
-                    <label><h5>Password:</h5></label> 
+                    <label><h5>Password:</h5></label>
                     <input id='password' type="password" class='form-control' placeholder='Enter password'>
                 </div>
                 <div id='logonNote' style='margin: 5%'></div>
@@ -64,13 +64,13 @@
 
             <form id='register' autocomplete='off' class='overlay-content col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-12 col-xs-12' action='http://127.0.0.1:8080'>
                 <div class='form-group'>
-                    <label><h5>Forename:</h5></label> 
+                    <label><h5>Forename:</h5></label>
                     <input id='forenameR' type="text" class='form-control' placeholder='Enter forename'>
-                    <label><h5>Surname:</h5></label> 
+                    <label><h5>Surname:</h5></label>
                     <input id='surnameR' type="text" class='form-control' placeholder='Enter surname'>
-                    <label><h5>Username:</h5></label> 
+                    <label><h5>Username:</h5></label>
                     <input id='usernameR' type="text" class='form-control' placeholder='Enter username'>
-                    <label><h5>Password:</h5></label> 
+                    <label><h5>Password:</h5></label>
                     <input id='passwordR' type="password" class='form-control' placeholder='Enter password'>
                 </div>
                 <div id='registrationNote' style='margin: 5%'></div>
@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-			
+
             <div id='playeroverlay' class='playeroverlay row'>
                 <div class='overlay-content'>
                     <h2 style='margin: 10px' id='pname'></h2>
@@ -115,7 +115,7 @@
                     <button class='btn btn-default btn-md' onclick='accept(0)'>Decline</button>
                 </div>
             </div>
-   
+
 
             <div class='row align-items-center'>
 
@@ -124,7 +124,7 @@
                     <div id='nameDisplay'></div>
                     <div id='stats'></div>
                 </div>
-                
+
 
                 <div class='col text-right'>
                     <div id='player2'></div>
@@ -138,7 +138,7 @@
                         <h4 class='float-right'>has been invited.</h4>
                         <button class='btn btn-default btn-sm' onclick='cancelInvite()'>Cancel Invite</button>
                     </div>
-                    
+
                     <div id='ready'>
                         <button class='btn btn-default btn-lg' onclick='ready()'>Ready!</button>
                     </div>
@@ -193,6 +193,7 @@
 
         <div id="instructions" class="container">
             <h2>How to Play</h2>
+            <p>Click on any small box to make a move.</p>
             <p>You are only allowed to make a move in the lit-up boxes.</p>
             <p>Lit up boxes are determined by where the last move occured.</p>
             <p>For example, if a move was made in the top left box of a smaller grid, the next move can only be made in the top left box of the big grid, etc.</p>

@@ -140,7 +140,7 @@ app.get('/people', function (req, res) {
     if (req.query.filter == "online") {
         for (i = 0; i < people.length; i++) {
             p = people[i];
-            if (p.status != "offline") {
+            if (p.status != "offline" && p.status != "away") {
                 on.online.push(p["username"]);
             };
         };
