@@ -9,13 +9,11 @@
         "mongodb": "^3.1.12",
         "morgan": "^1.9.1",
         "object-assign": "^4.1.1",
-        "uuid": "^3.3.2"
-    },
-	"scripts": {
-		"test": "jest"
-	},
-    "devDependencies": {
+        "uuid": "^3.3.2",
         "jest": "^24.0.0",
         "supertest": "^3.4.2"
-    }
+    },
+	  "scripts": {
+		    "test": "jest"
+	  },
 }
