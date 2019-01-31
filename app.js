@@ -432,6 +432,13 @@ function updateBoard(gid, s, p, sym) {
         };
     };
 
+    var gameOver = true;
+    for (i = 0; i < 10; i++){
+        if (game.board[i.toString()].win == ""){
+            gameOver = false;
+        };
+    };
+
     var p1 = findPlayer(game.players.O);
     var p2 = findPlayer(game.players.X);
     var winner;
@@ -449,7 +456,7 @@ function updateBoard(gid, s, p, sym) {
         people[winner].status = "win";
         people[loser].stats.played++;
         people[loser].status = "loss";
-    } else if (!game.board.playableS[0]) {
+    } else if (gameOver) {
         game.board.win = "draw";
         people[winner].stats.played++;
         people[winner].status = "draw";
