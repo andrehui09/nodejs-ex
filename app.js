@@ -360,7 +360,7 @@ app.post('/games/:gid', function (req, res) {
 
                 updateBoard(req.params["gid"], s, p, symbol);
 
-                if (game.board.win == "") {
+                if (game.board.win == "" && game.board.playbleS.length != 0) {
                     var p1 = findPlayer(game.players.O);
                     var p2 = findPlayer(game.players.X);
                     if (symbol == "O") {
@@ -404,7 +404,7 @@ function updateBoard(gid, s, p, sym) {
 		game.board[s].win = "none";
     };
     
-    if (game.board[s].win != ""){
+    if (game.board[s].win != "" && game.board[s].win != "none"){
         game.board.lastmove.win = "true";
     } else {
         game.board.lastmove.win = "";
