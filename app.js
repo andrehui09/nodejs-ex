@@ -443,7 +443,7 @@ function updateBoard(gid, s, p, sym) {
 
 app.get('/chat', function (req, res) {
     chat = '';
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 15; i++) {
         if (messagelist[i]) {
             chat += '<div class=\'chat' + messagelist[i][2] + '\' style=\'background-color=#808080\'><small>' + messagelist[i][0] + '</small><div>' + messagelist[i][1] + '</div></div>';
         };
@@ -461,7 +461,7 @@ app.post('/chat', function (req, res) {
 
     if (validTokens.includes(req.body["access_token"])) {
         messagelist.push([req.body.username, req.body.message, col]);
-        if (messagelist.length > 30) {
+        if (messagelist.length > 15) {
             messagelist.shift();
         }
         res.send({ "posted": "true" });

@@ -131,9 +131,7 @@ function closePlayer(){
 
 
 function updateChat() {
-    //console.log('updatingchat');
     $.get(url + 'chat', {}, function (data) {
-        //recieve list size 30?
         if(data != chatHist){
             $('#worldchat').html(data);
             $('#worldchat').scrollTop($('#worldchat')[0].scrollHeight);
