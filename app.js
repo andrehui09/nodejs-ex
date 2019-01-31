@@ -383,6 +383,7 @@ app.post('/games/:gid', function (req, res) {
 
 function updateBoard(gid, s, p, sym) {
     const game = games[gid];
+    var filled = true;
     game.board.playableS = [];
     game.board[s][p] = sym;
 
@@ -392,6 +393,17 @@ function updateBoard(gid, s, p, sym) {
             game.board[s].win = sym;
         };
     };
+
+    for (i = 1; i < 10; i++){
+		if (game.board[s][i.toString()] == "") {
+			filled = false;
+		};
+    };
+    
+	if (filled) {
+		game.board[s].win = "none";
+    };
+    
     if (game.board[s].win != ""){
         game.board.lastmove.win = "true";
     } else {
@@ -437,7 +449,12 @@ function updateBoard(gid, s, p, sym) {
         people[winner].status = "win";
         people[loser].stats.played++;
         people[loser].status = "loss";
-    };
+    } else if (game.board.playableS.length == 0) {
+        people[winner].stats.played++;
+        people[winner].status = "draw";
+        people[loser].stats.played++;
+        people[loser].status = "draw";
+	};
 };
 
 

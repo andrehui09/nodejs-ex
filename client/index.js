@@ -631,6 +631,17 @@ function status() {
                 confirm = false;
                 started = false;
             };
+        } else if (data["status"] == 'draw') {
+            if(!finalupdate){
+                updateBoard();
+                finalupdate = true;
+                highlightSec([]);
+                $('#result').html('Draw.');
+                $('#home').show();
+                $('#forfeit').hide();
+                confirm = false;
+                started = false;
+            };
         } else if(data["status"] == 'inviter'){
             invitesent = true;
 
