@@ -360,7 +360,7 @@ app.post('/games/:gid', function (req, res) {
 
                 updateBoard(req.params["gid"], s, p, symbol);
 
-                if (game.board.win == "" && game.board.playbleS.length != 0) {
+                if (game.board.win == "" && game.board.playableS.length != 0) {
                     var p1 = findPlayer(game.players.O);
                     var p2 = findPlayer(game.players.X);
                     if (symbol == "O") {
