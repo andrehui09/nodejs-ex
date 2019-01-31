@@ -432,12 +432,12 @@ function updateBoard(gid, s, p, sym) {
         };
     };
 
-    var gameOver = true;
+    /*var gameOver = true;
     for (i = 0; i < 10; i++){
         if (game.board[i.toString()].win == ""){
             gameOver = false;
         };
-    };
+    };*/
 
     var p1 = findPlayer(game.players.O);
     var p2 = findPlayer(game.players.X);
@@ -456,13 +456,13 @@ function updateBoard(gid, s, p, sym) {
         people[winner].status = "win";
         people[loser].stats.played++;
         people[loser].status = "loss";
-    } else if (gameOver) {
+    } /*else if (gameOver) {
         game.board.win = "draw";
         people[winner].stats.played++;
         people[winner].status = "draw";
         people[loser].stats.played++;
         people[loser].status = "draw";
-	};
+	};*/
 };
 
 
